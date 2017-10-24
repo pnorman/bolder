@@ -7,10 +7,11 @@ Generating vector tiles depends on
 - osm2pgsql 0.90.1 or later with Lua support, loaded with `-G --hstore` and the Lua transform script provided
 - PostgreSQL 9.3 or later. 9.5 or later is recommended and better tested.
 - PostGIS 2.0 or later. 2.3 or later is recommended as earlier versions are not adequately tested with the style.
+- Python 3.4 with PyYaml, PsycoPG2, and requests. On Debian and Ubuntu, these are the `python3-yaml`, `python3-psycopg2`, and `python3-requests`.
 
 ## Installation
 
-##
+Installation consists of installing the dependencies above, loading OpenStreetMap data, loading other data sources, and installing the vector tile server.
 
 ### OpenStreetMap Data
 
@@ -20,4 +21,12 @@ Start by setting up your database to have PostGIS and hstore with ``psql -d gis 
 
 ```
 osm2pgsql -G --hstore --style openstreetmap-carto.style --tag-transform-script openstreetmap-carto.lua -d gis ~/path/to/data.osm.pbf
+```
+
+### External Data
+
+Bolder relies on some external data sources from OpenStreetMapData.com and Natural Earth. These are downloaded and loaded into the database with a script
+
+```
+./get-external-data.py
 ```
