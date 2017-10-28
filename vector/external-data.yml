@@ -1,0 +1,84 @@
+settings:
+  temp_schema: loading
+  schema: public
+  data_dir: data
+  database: gis
+  metadata_table: external_data
+sources:
+  simplified_ocean_polygons:
+    # The type of file this source is
+    type: shp
+    # Where to get it
+    url: http://data.openstreetmapdata.com/simplified-water-polygons-complete-3857.zip
+    # The location within the archive
+    file: simplified-water-polygons-complete-3857/simplified_water_polygons.shp
+    archive:
+      format: zip
+      # Files to extract from the archive
+      files:
+        - simplified-water-polygons-complete-3857/simplified_water_polygons.cpg
+        - simplified-water-polygons-complete-3857/simplified_water_polygons.dbf
+        - simplified-water-polygons-complete-3857/simplified_water_polygons.prj
+        - simplified-water-polygons-complete-3857/simplified_water_polygons.shp
+        - simplified-water-polygons-complete-3857/simplified_water_polygons.shx
+  ocean_polygons:
+    type: shp
+    url: http://data.openstreetmapdata.com/water-polygons-split-3857.zip
+    file: water-polygons-split-3857/water_polygons.shp
+    archive:
+      format: zip
+      files:
+        - water-polygons-split-3857/water_polygons.cpg
+        - water-polygons-split-3857/water_polygons.dbf
+        - water-polygons-split-3857/water_polygons.prj
+        - water-polygons-split-3857/water_polygons.shp
+        - water-polygons-split-3857/water_polygons.shx
+  ne_ocean:
+    type: shp
+    url: http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/physical/ne_50m_ocean.zip
+    file: ne_50m_ocean.shp
+    ogropts: &ne_opts
+      - "--config"
+      - "SHAPE_ENCODING"
+      - "WINDOWS-1252"
+      - "-explodecollections"
+      # needs reprojecting
+      - '-t_srs'
+      - 'EPSG:3857'
+      - "-clipsrc"
+      # clip so postgis doesn't have geohash errors
+      - "-179.999999999"
+      - "-85.05112877980659"
+      - "179.999999999"
+      - "85.05112877980659"
+    archive:
+      format: zip
+      files:
+        - ne_50m_ocean.dbf
+        - ne_50m_ocean.prj
+        - ne_50m_ocean.shp
+        - ne_50m_ocean.shx
+  ne_lake:
+    type: shp
+    url: http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/physical/ne_50m_lakes.zip
+    file: ne_50m_lakes.shp
+    ogropts: *ne_opts
+    archive:
+      format: zip
+      files:
+        - ne_50m_lakes.dbf
+        - ne_50m_lakes.prj
+        - ne_50m_lakes.shp
+        - ne_50m_lakes.shx
+  ne_places:
+    type: shp
+    url: http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_populated_places_simple.zip
+    file: ne_10m_populated_places_simple.shp
+    ogropts: *ne_opts
+    archive:
+      format: zip
+      files:
+        - ne_10m_populated_places_simple.dbf
+        - ne_10m_populated_places_simple.prj
+        - ne_10m_populated_places_simple.shp
+        - ne_10m_populated_places_simple.shx
