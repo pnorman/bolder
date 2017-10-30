@@ -1,0 +1,15 @@
+sources:
+  bolder:
+    type: GeoJSON
+    url: http://localhost:8080/all/{z}/{x}/{y}.json
+scene:
+  background:
+    color: &land-color '#f8f7f1'
+
+layers:
+  water:
+    data: { source: bolder }
+    draw:
+      polygons:
+        order: 2
+        color: '#e0ebff'
