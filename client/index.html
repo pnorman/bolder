@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bolder - Tangram JS</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+
+    <style>
+        body {
+            margin: 0px;
+            border: 0px;
+            padding: 0px;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <!-- Leaflet and leaflet-hash -->
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-hash@0.2.1/leaflet-hash.js"></script>
+    <!-- Main tangram library -->
+    <script src="https://mapzen.com/tangram/0.13/tangram.min.js"></script>
+
+    <!-- Demo setup -->
+    <script>
+      
+        var map = L.map('map');
+
+        var layer = Tangram.leafletLayer({
+            scene: 'scene.yaml',
+            attribution: 'Data &copy; <a href="http://www.openstreetmap.org/copyright">OSM contributors</a>'
+        });
+
+        layer.addTo(map);
+
+        map.setView([49.22, -122.9], 12.4);
+        var hash = new L.Hash(map)
+    </script>
+
+  </body>
+</html>
