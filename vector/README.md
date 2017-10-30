@@ -30,3 +30,20 @@ Bolder relies on external data sources from OpenStreetMapData.com and Natural Ea
 ```
 ./get-external-data.py
 ```
+
+More options are available with the `--help` option.
+
+## Tileserver
+
+The vector definitions are designed to work with Mapzen's [tileserver](https://github.com/tilezen/tileserver) and [tilequeue](https://github.com/tilezen/tilequeue). A production setup will need a custom configuration file, but a sample development one can be found in [`config.yaml`](config.yaml).
+
+One way to use this is by installing tileserver with virtualenv (`python-virtualenv` on Debian and Ubuntu)
+
+```sh
+virtualenv env
+source env/bin/activate
+pip install tileserver==2.11
+python env/lib/python2.7/site-packages/tileserver/__init__.py config.yaml
+```
+
+You can check this is working by going to http://localhost:8080/_health in a browser.
