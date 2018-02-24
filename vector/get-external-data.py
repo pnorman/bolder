@@ -60,6 +60,8 @@ class Table:
 
   def index(self):
     with self._conn.cursor() as cur:
+      # Disable autovacuum while manipulating the table, since it'll get clustered towards the end.
+      cur.execute('''ALTER TABLE "{temp_schema}"."{name}" SET ( autovacuum_enabled = FALSE );'''.format(name=self._name, temp_schema=self._temp_schema))
       # ogr creates a ogc_fid column we don't need
       cur.execute('''ALTER TABLE "{temp_schema}"."{name}" DROP COLUMN ogc_fid;'''.format(name=self._name, temp_schema=self._temp_schema))
 
@@ -74,6 +76,8 @@ DROP INDEX "{temp_schema}"."{name}_geohash";
 CREATE INDEX ON "{temp_schema}"."{name}" USING GIST (way) WITH (fillfactor=100);
 ANALYZE "{temp_schema}"."{name}";
 '''.format(name=self._name, temp_schema=self._temp_schema))
+      # Reset autovacuum. The table is static, so this doesn't really matter since it'll never need a vacuum.
+      cur.execute('''ALTER TABLE "{temp_schema}"."{name}" SET ( autovacuum_enabled = FALSE );'''.format(name=self._name, temp_schema=self._temp_schema))
     self._conn.commit()
 
   def replace(self, new_last_modified):
