@@ -65,6 +65,9 @@ class Table:
       # ogr creates a ogc_fid column we don't need
       cur.execute('''ALTER TABLE "{temp_schema}"."{name}" DROP COLUMN ogc_fid;'''.format(name=self._name, temp_schema=self._temp_schema))
 
+      # Null geometries are useless for rendering
+      cur.execute('''DELETE FROM "{temp_schema}"."{name}" WHERE way IS NULL;'''.format(name=self._name, temp_schema=self._temp_schema))
+      cur.execute('''ALTER TABLE "{temp_schema}"."{name}" ALTER COLUMN way SET NOT NULL;'''.format(name=self._name, temp_schema=self._temp_schema))
       # sorting static tables helps performance and reduces size from the column drop above
       # see osm2pgsql for why this particular geohash invocation
       cur.execute('''
