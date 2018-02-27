@@ -1,6 +1,6 @@
-#[cache]
-#type = "file"
-#basepath = "cache"
+[cache]
+type = "file"
+basepath = "cache"
 
 [[providers]]
 name = "osm2pgsql"
@@ -82,6 +82,29 @@ password = ""
     ) _
   """
 
+  [[providers.layers]]
+  name = "water_names"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way
+    FROM (
+      SELECT
+          ST_PointOnSurface(way) AS way,
+          name
+        FROM planet_osm_polygon
+        WHERE way && !BBOX!
+          AND name IS NOT NULL
+          AND (waterway = 'riverbank'
+            OR landuse = 'reservoir'
+            OR "natural" = 'water')
+          AND way_area > pixel_size(12)*16 -- working around tegola #343
+    ) _
+    WHERE way && !BBOX!
+  """
+
 [[maps]]
 name = "bolder"
 
@@ -100,4 +123,9 @@ max_zoom = 9
 [[maps.layers]]
 name = "water"
 provider_layer = "osm2pgsql.water"
+min_zoom = 10
+
+[[maps.layers]]
+name = "water_names"
+provider_layer = "osm2pgsql.water_names"
 min_zoom = 10
