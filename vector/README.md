@@ -33,17 +33,16 @@ Bolder relies on external data sources from OpenStreetMapData.com and Natural Ea
 
 More options are available with the `--help` option.
 
-## Tileserver
+## Functions
 
-The vector definitions are designed to work with Mapzen's [tileserver](https://github.com/tilezen/tileserver) and [tilequeue](https://github.com/tilezen/tilequeue). A production setup will need a custom configuration file, but a sample development one can be found in [`config.yaml`](config.yaml).
-
-One way to use this is by installing tileserver with virtualenv (`python-virtualenv` on Debian and Ubuntu)
+Bolder requires some stylesheet-independent functions
 
 ```sh
-virtualenv env
-source env/bin/activate
-pip install tileserver==2.11
-python env/lib/python2.7/site-packages/tileserver/__init__.py config.yaml
+psql -Xq -d gis -f functions.sql
 ```
 
-You can check this is working by going to http://localhost:8080/_health in a browser.
+## Tegola
+
+The vector definitions work with [Tegola](http://tegola.io/). Tegola can be downloaded from its [release page](https://github.com/terranodo/tegola/releases). The definitions are developed against v0.6.0.
+
+The tiles can be served with `TEGOLA_OPTIONS=DontSimplifyGeo tegola serve` anc accessed at http://localhost:8080/.
