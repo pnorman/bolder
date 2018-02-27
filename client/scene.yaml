@@ -1,7 +1,7 @@
 sources:
   bolder:
-    type: GeoJSON
-    url: http://localhost:8080/all/{z}/{x}/{y}.json
+    type: MVT
+    url: http://localhost:8080/maps/bolder/{z}/{x}/{y}
 scene:
   background:
     color: &land-color '#f8f7f1'
