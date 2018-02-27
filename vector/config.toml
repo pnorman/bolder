@@ -1,0 +1,103 @@
+#[cache]
+#type = "file"
+#basepath = "cache"
+
+[[providers]]
+name = "osm2pgsql"
+type = "postgis"
+host = "/var/run/postgresql" # Default for Debian-based distributions
+port = 5432                     # postgis database port
+database = "gis"        # postgis database name
+user = "pnorman"
+password = ""
+
+  [[providers.layers]]
+  name = "ne_water"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way
+    FROM (
+    SELECT
+        way
+      FROM ne_ocean
+      WHERE way && !BBOX!
+    UNION ALL
+    SELECT
+        way
+      FROM ne_lake
+      WHERE way && !BBOX!
+    ) _
+  """
+
+  [[providers.layers]]
+  name = "lz_water"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way
+    FROM (
+      SELECT
+          way
+        FROM simplified_ocean_polygons
+        WHERE way && !BBOX!
+      UNION ALL
+      SELECT
+          way
+        FROM planet_osm_polygon
+        WHERE way && !BBOX!
+          AND (waterway = 'riverbank'
+            OR landuse = 'reservoir'
+            OR "natural" = 'water')
+          AND way_area > pixel_size(9)*4 -- working around tegola #343
+    ) _
+  """
+
+  [[providers.layers]]
+  name = "water"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way
+    FROM (
+      SELECT
+          way
+        FROM ocean_polygons
+        WHERE way && !BBOX!
+      UNION ALL
+      SELECT
+          way
+        FROM planet_osm_polygon
+        WHERE way && !BBOX!
+          AND (waterway = 'riverbank'
+            OR landuse = 'reservoir'
+            OR "natural" = 'water')
+          AND way_area > pixel_size(12)*4 -- working around tegola #343
+    ) _
+  """
+
+[[maps]]
+name = "bolder"
+
+[[maps.layers]]
+name = "water"
+provider_layer = "osm2pgsql.ne_water"
+min_zoom = 0
+max_zoom = 5
+
+[[maps.layers]]
+name = "water"
+provider_layer = "osm2pgsql.lz_water"
+min_zoom = 6
+max_zoom = 9
+
+[[maps.layers]]
+name = "water"
+provider_layer = "osm2pgsql.water"
+min_zoom = 10
