@@ -119,7 +119,7 @@ password = ""
           way,
           name,
           ref,
-          highway AS class -- strip link
+          highway AS class
         FROM planet_osm_roads
         WHERE way && !BBOX!
           AND highway IN ('motorway')
@@ -140,7 +140,7 @@ password = ""
           way,
           name,
           ref,
-          highway AS class -- strip link
+          highway AS class
         FROM planet_osm_roads
         WHERE way && !BBOX!
           AND highway IN ('motorway', 'trunk')
@@ -161,7 +161,7 @@ password = ""
           way,
           name,
           ref,
-          highway AS class -- strip link
+          highway AS class
         FROM planet_osm_roads
         WHERE way && !BBOX!
           AND highway IN ('motorway', 'trunk', 'primary')
@@ -182,7 +182,7 @@ password = ""
           way,
           name,
           ref,
-          highway AS class -- strip link
+          highway AS class
         FROM planet_osm_roads
         WHERE way && !BBOX!
           AND highway IN ('motorway', 'trunk', 'primary', 'secondary')
@@ -219,13 +219,11 @@ name = "water"
 provider_layer = "osm2pgsql.ne_water"
 min_zoom = 0
 max_zoom = 5
-
 [[maps.layers]]
 name = "water"
 provider_layer = "osm2pgsql.lz_water"
 min_zoom = 6
 max_zoom = 9
-
 [[maps.layers]]
 name = "water"
 provider_layer = "osm2pgsql.water"
@@ -236,30 +234,27 @@ name = "water_names"
 provider_layer = "osm2pgsql.water_names"
 min_zoom = 10
 
+# This should be 6-9 and 10+, but needs to be per layer to work around Tegola #343.
 [[maps.layers]]
 name = "transport"
 provider_layer = "osm2pgsql.transport_z6"
 min_zoom = 6
 max_zoom = 6
-
 [[maps.layers]]
 name = "transport"
 provider_layer = "osm2pgsql.transport_z7"
 min_zoom = 7
 max_zoom = 7
-
 [[maps.layers]]
 name = "transport"
 provider_layer = "osm2pgsql.transport_z8"
 min_zoom = 8
 max_zoom = 8
-
 [[maps.layers]]
 name = "transport"
 provider_layer = "osm2pgsql.transport_z9"
 min_zoom = 9
 max_zoom = 9
-
 [[maps.layers]]
 name = "transport"
 provider_layer = "osm2pgsql.transport_z10"
