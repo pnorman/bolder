@@ -89,7 +89,8 @@ password = ""
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
-      ST_AsBinary(way) AS way
+      ST_AsBinary(way) AS way,
+      name
     FROM (
       SELECT
           ST_PointOnSurface(way) AS way,
@@ -113,13 +114,17 @@ password = ""
   SELECT
       row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
-      name
+      name,
+      ref,
+      class,
+      link
     FROM (
       SELECT
           way,
           name,
           ref,
-          highway AS class
+          highway AS class,
+          FALSE AS link
         FROM planet_osm_roads
         WHERE way && !BBOX!
           AND highway IN ('motorway')
@@ -134,13 +139,17 @@ password = ""
   SELECT
       row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
-      name
+      name,
+      ref,
+      class,
+      link
     FROM (
       SELECT
           way,
           name,
           ref,
-          highway AS class
+          highway AS class,
+          FALSE AS link
         FROM planet_osm_roads
         WHERE way && !BBOX!
           AND highway IN ('motorway', 'trunk')
@@ -155,13 +164,17 @@ password = ""
   SELECT
       row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
-      name
+      name,
+      ref,
+      class,
+      link
     FROM (
       SELECT
           way,
           name,
           ref,
-          highway AS class
+          highway AS class,
+          FALSE AS link
         FROM planet_osm_roads
         WHERE way && !BBOX!
           AND highway IN ('motorway', 'trunk', 'primary')
@@ -176,13 +189,17 @@ password = ""
   SELECT
       row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
-      name
+      name,
+      ref,
+      class,
+      link
     FROM (
       SELECT
           way,
           name,
           ref,
-          highway AS class
+          highway AS class,
+          FALSE AS link
         FROM planet_osm_roads
         WHERE way && !BBOX!
           AND highway IN ('motorway', 'trunk', 'primary', 'secondary')
@@ -197,13 +214,17 @@ password = ""
   SELECT
       row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
-      name
+      name,
+      ref,
+      class,
+      link
     FROM (
       SELECT
           way,
           name,
           ref,
-          highway AS class -- strip link
+          CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
+          substr(highway, length(highway)-4, 5) = '_link' AS link
         FROM planet_osm_line
         WHERE way && !BBOX!
           AND highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
@@ -259,4 +280,3 @@ max_zoom = 9
 name = "transport"
 provider_layer = "osm2pgsql.transport_z10"
 min_zoom = 10
-max_zoom = 10
