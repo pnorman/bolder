@@ -4,7 +4,7 @@ sources:
     url: http://localhost:8080/maps/bolder/{z}/{x}/{y}
 scene:
   background:
-    color: &land-color '#f8f7f1'
+    color: &land-color '#f0e9d4' # SW 7105 262-C1
 
 layers:
   water:
@@ -12,4 +12,11 @@ layers:
     draw:
       polygons:
         order: 2
-        color: '#e0ebff'
+        color: '#9fc8e2' # SW 9063 177-C3
+
+  forests:
+    data: { source: bolder }
+    draw:
+      polygons:
+        order: 10
+        color: '#99ba87' # SW 9033 150-C3
