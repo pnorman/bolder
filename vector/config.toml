@@ -105,6 +105,112 @@ password = ""
     WHERE way && !BBOX!
   """
 
+  [[providers.layers]]
+  name = "transport_z6"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      name
+    FROM (
+      SELECT
+          way,
+          name,
+          ref,
+          highway AS class -- strip link
+        FROM planet_osm_roads
+        WHERE way && !BBOX!
+          AND highway IN ('motorway')
+    ) _
+  """
+
+  [[providers.layers]]
+  name = "transport_z7"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      name
+    FROM (
+      SELECT
+          way,
+          name,
+          ref,
+          highway AS class -- strip link
+        FROM planet_osm_roads
+        WHERE way && !BBOX!
+          AND highway IN ('motorway', 'trunk')
+    ) _
+  """
+
+  [[providers.layers]]
+  name = "transport_z8"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      name
+    FROM (
+      SELECT
+          way,
+          name,
+          ref,
+          highway AS class -- strip link
+        FROM planet_osm_roads
+        WHERE way && !BBOX!
+          AND highway IN ('motorway', 'trunk', 'primary')
+    ) _
+  """
+
+  [[providers.layers]]
+  name = "transport_z9"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      name
+    FROM (
+      SELECT
+          way,
+          name,
+          ref,
+          highway AS class -- strip link
+        FROM planet_osm_roads
+        WHERE way && !BBOX!
+          AND highway IN ('motorway', 'trunk', 'primary', 'secondary')
+    ) _
+  """
+
+  [[providers.layers]]
+  name = "transport_z10"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      name
+    FROM (
+      SELECT
+          way,
+          name,
+          ref,
+          highway AS class -- strip link
+        FROM planet_osm_line
+        WHERE way && !BBOX!
+          AND highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
+                          'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
+    ) _
+  """
+
 [[maps]]
 name = "bolder"
 
@@ -129,3 +235,33 @@ min_zoom = 10
 name = "water_names"
 provider_layer = "osm2pgsql.water_names"
 min_zoom = 10
+
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.transport_z6"
+min_zoom = 6
+max_zoom = 6
+
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.transport_z7"
+min_zoom = 7
+max_zoom = 7
+
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.transport_z8"
+min_zoom = 8
+max_zoom = 8
+
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.transport_z9"
+min_zoom = 9
+max_zoom = 9
+
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.transport_z10"
+min_zoom = 10
+max_zoom = 10
