@@ -231,7 +231,23 @@ password = ""
                           'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
     ) _
   """
-
+  [[providers.layers]]
+  name = "forests"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way
+    FROM (
+      SELECT
+          way
+        FROM planet_osm_polygon
+        WHERE way && !BBOX!
+          AND (landuse = 'forest' OR "natural" = 'wood')
+          AND way_area > pixel_size(9)*4 -- working around tegola #343
+    ) _
+  """
 [[maps]]
 name = "bolder"
 
@@ -254,6 +270,12 @@ min_zoom = 10
 name = "water_names"
 provider_layer = "osm2pgsql.water_names"
 min_zoom = 10
+
+[[maps.layers]]
+name = "forests"
+provider_layer = "osm2pgsql.forests"
+min_zoom = 8
+
 
 # This should be 6-9 and 10+, but needs to be per layer to work around Tegola #343.
 [[maps.layers]]
