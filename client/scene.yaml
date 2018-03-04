@@ -12,7 +12,7 @@ layers:
     draw:
       polygons:
         order: 2
-        color: '#9fc8e2' # SW 9063 177-C3
+        color: &water-color '#9cc4dc' # SW 9063 177-C3
 
   forests:
     data: { source: bolder }
@@ -20,3 +20,12 @@ layers:
       polygons:
         order: 10
         color: '#99ba87' # SW 9033 150-C3
+
+  water_names:
+    data: { source: bolder }
+    draw:
+      text:
+        font:
+          family: Helvetica
+          size: 24px
+          fill: '#6b89a0' # SW 6802 177-C5

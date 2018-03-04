@@ -90,18 +90,20 @@ password = ""
   SELECT
       row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
-      name
+      name,
+      area
     FROM (
       SELECT
           ST_PointOnSurface(way) AS way,
-          name
+          name,
+          way_area AS area
         FROM planet_osm_polygon
         WHERE way && !BBOX!
           AND name IS NOT NULL
           AND (waterway = 'riverbank'
             OR landuse = 'reservoir'
             OR "natural" = 'water')
-          AND way_area > pixel_size(12)*16 -- working around tegola #343
+          AND way_area > pixel_size(12)*16*16 -- working around tegola #343
     ) _
     WHERE way && !BBOX!
   """
