@@ -6,6 +6,18 @@ scene:
   background:
     color: &land-color '#f0e9d4' # SW 7105 262-C1
 
+styles:
+  labels:
+    base: text
+    draw:
+      font:
+        family: Open Sans
+        size: 14px
+        weight: 600
+        stroke:
+          color: 'white'
+          width: '1.75px'
+
 layers:
   water:
     data: { source: bolder }
@@ -24,8 +36,6 @@ layers:
   water_names:
     data: { source: bolder }
     draw:
-      text:
+      labels:
         font:
-          family: Helvetica
-          size: 24px
           fill: '#6b89a0' # SW 6802 177-C5
