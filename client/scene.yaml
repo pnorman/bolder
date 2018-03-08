@@ -24,7 +24,7 @@ layers:
     draw:
       polygons:
         order: 2
-        color: &water-color '#9cc4dc' # SW 9063 177-C3
+        color: &water-color '#a9d0e1' # SW 6800 177-C2
 
   forests:
     data: { source: bolder }
