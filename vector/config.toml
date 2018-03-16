@@ -109,7 +109,7 @@ password = ""
   """
 
   [[providers.layers]]
-  name = "transport_z6"
+  name = "transport_z5"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
   sql = """
@@ -134,7 +134,7 @@ password = ""
   """
 
   [[providers.layers]]
-  name = "transport_z7"
+  name = "transport_z6"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
   sql = """
@@ -282,13 +282,13 @@ min_zoom = 8
 # This should be 6-9 and 10+, but needs to be per layer to work around Tegola #343.
 [[maps.layers]]
 name = "transport"
-provider_layer = "osm2pgsql.transport_z6"
-min_zoom = 6
-max_zoom = 6
+provider_layer = "osm2pgsql.transport_z5"
+min_zoom = 5
+max_zoom = 5
 [[maps.layers]]
 name = "transport"
-provider_layer = "osm2pgsql.transport_z7"
-min_zoom = 7
+provider_layer = "osm2pgsql.transport_z6"
+min_zoom = 6
 max_zoom = 7
 [[maps.layers]]
 name = "transport"
