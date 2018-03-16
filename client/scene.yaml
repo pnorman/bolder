@@ -34,7 +34,7 @@ layers:
         color: '#a0c28d' # H130_L75_C030
 
   water_names:
-    data: { source: bolder } 
+    data: { source: bolder }
     draw:
       labels:
         font:
