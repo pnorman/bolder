@@ -45,4 +45,4 @@ psql -Xq -d gis -f functions.sql
 
 The vector definitions work with [Tegola](http://tegola.io/). Tegola can be downloaded from its [release page](https://github.com/terranodo/tegola/releases). The definitions are developed against v0.6.0.
 
-The tiles can be served with `TEGOLA_OPTIONS=DontSimplifyGeo tegola serve` anc accessed at http://localhost:8080/.
+The tiles can be served with `TEGOLA_OPTIONS=DontSimplifyGeo tegola serve` and accessed at http://localhost:8080/.
