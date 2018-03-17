@@ -118,6 +118,28 @@ password = ""
   """
 
   [[providers.layers]]
+  name = "cities"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      name,
+      place
+    FROM (
+      SELECT
+          way,
+          name,
+          place
+        FROM planet_osm_point
+        WHERE way && !BBOX!
+          AND place IN ('city', 'town', 'village', 'hamlet')
+          AND name IS NOT NULL
+    ) _
+  """
+
+  [[providers.layers]]
   name = "transport_z5"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
@@ -287,6 +309,10 @@ name = "forests"
 provider_layer = "osm2pgsql.forests"
 min_zoom = 8
 
+[[maps.layers]]
+name = "cities"
+provider_layer = "osm2pgsql.cities"
+min_zoom = 6
 
 # This should be 6-9 and 10+, but needs to be per layer to work around Tegola #343.
 [[maps.layers]]
