@@ -100,10 +100,19 @@ password = ""
         FROM planet_osm_polygon
         WHERE way && !BBOX!
           AND name IS NOT NULL
-          AND (waterway = 'riverbank'
-            OR landuse = 'reservoir'
+          AND (landuse = 'reservoir'
             OR "natural" = 'water')
+          AND NOT water = 'river'
           AND way_area > pixel_size(12)*16*16 -- working around tegola #343
+      UNION ALL
+      SELECT
+          way,
+          name,
+          NULL AS area
+        FROM planet_osm_line
+        WHERE way && !BBOX!
+          AND name IS NOT NULL
+          AND waterway = 'river'
     ) _
     WHERE way && !BBOX!
   """
