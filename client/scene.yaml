@@ -14,6 +14,7 @@ styles:
         family: Open Sans
         size: 14px
         weight: 600
+        fill: 'black'
         stroke:
           color: 'white'
           width: '1.75px'
@@ -39,6 +40,12 @@ layers:
       labels:
         font:
           fill: '#6b89a0' # SW 6802 177-C5
+
+  cities:
+    data: { source: bolder }
+    draw:
+      labels:
+        order: 700
 
   transport:
     data: { source: bolder }
