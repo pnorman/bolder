@@ -134,7 +134,10 @@ password = ""
           place
         FROM planet_osm_point
         WHERE way && !BBOX!
-          AND place IN ('city', 'town', 'village', 'hamlet')
+          AND (place = 'city'
+            OR place = 'town' AND 8 < !ZOOM!
+            OR place = 'village' AND 10 < !ZOOM!
+            OR place = 'hamlet' AND 12 < !ZOOM!)
           AND name IS NOT NULL
     ) _
   """
