@@ -108,6 +108,7 @@ def main():
   parser.add_argument("-f", "--force", action="store_true", help="Download new data, even if not required")
 
   parser.add_argument("-c", "--config", action="store", default="external-data.yml", help="Name of configuraton file (default external-data.yml)")
+  parser.add_argument("-D", "--data", action="store", help="Override data download directory")
 
   parser.add_argument("-d", "--database", action="store", help="Override database name to connect to")
   parser.add_argument("-H", "--host", action="store", help="Override database server host or socket directory")
@@ -127,7 +128,8 @@ def main():
 
   with open(opts.config) as config_file:
     config = yaml.safe_load(config_file)
-    os.makedirs(config["settings"]["data_dir"], exist_ok=True)
+    data_dir = opts.data or config["settings"]["data_dir"]
+    os.makedirs(data_dir, exist_ok=True)
 
     # If the DB options are unspecified in both on the command line and in the
     # config file, libpq will pick what to use with the None
@@ -154,7 +156,7 @@ def main():
         if not re.match('''^[a-zA-Z0-9_]+$''', name):
           raise RuntimeError("Only ASCII alphanumeric table are names supported")
 
-        workingdir = os.path.join(config["settings"]["data_dir"], name)
+        workingdir = os.path.join(data_dir, name)
         # Clean up anything left over from an aborted run
         shutil.rmtree(workingdir, ignore_errors=True)
 
