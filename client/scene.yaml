@@ -1,10 +1,11 @@
+import: freecolour.yaml
 sources:
   bolder:
     type: MVT
     url: http://localhost:8080/maps/bolder/{z}/{x}/{y}
 scene:
   background:
-    color: &land-color '#e6e2d9' # H090_L90_C005
+    color: &land-color global.freecolour.H090_L90_C005
 
 styles:
   labels:
@@ -25,21 +26,21 @@ layers:
     draw:
       polygons:
         order: 2
-        color: &water-color '#acdcf1' # H230_L85_C020
+        color: &water-color global.freecolour.H230_L85_C020
 
   forests:
     data: { source: bolder }
     draw:
       polygons:
         order: 10
-        color: '#a0c28d' # H130_L75_C030
+        color: global.freecolour.H130_L75_C030
 
   water_names:
     data: { source: bolder }
     draw:
       labels:
         font:
-          fill: '#6b89a0' # SW 6802 177-C5
+          fill: global.freecolour.H230_L45_C020
 
   cities:
     data: { source: bolder }
@@ -57,51 +58,45 @@ layers:
       draw:
         lines:
           order: 300
-          color: '#f23a22' # H040_L55_C090
+          color: global.freecolour.H040_L55_C090
           width: [[6,0.5px], [8, 1.5px], [12, 3px]]
           cap: round
           outline:
-            color: '#c92916' # H040_L45_C080
+            color: global.freecolour.H040_L45_C080
             width: [[10, 0px], [12, 1px]]
         labels:
           font:
             fill: black
-            stroke:
-              color: '#c92916' # H040_L45_C080
     major:
       filter:
         class: [trunk, primary]
       draw:
         lines:
           order: 300
-          color: '#fda258' # H060_L75_C060
+          color: global.freecolour.H060_L75_C060
           width: [[6, 0.4px], [8, 1.0px], [12, 2px]]
           cap: round
           outline:
-            color: '#e6832c' # H060_L65_C070
+            color: global.freecolour.H060_L65_C070
             width: [[10, 0px], [12, 1px]]
         labels:
           font:
             fill: black
-            stroke:
-              color: '#e6832c' # H060_L65_C070
     minor:
       filter:
         class: [secondary, tertiary]
       draw:
         lines:
           order: 300
-          color: '#f9cd76' # H080_L85_C050
+          color: global.freecolour.H080_L85_C050
           width: [[6, 0.4px], [8, 1.0px], [12, 2px]]
           cap: round
           outline:
-            color: '#dcb25c' # H080_L75_C050
+            color: global.freecolour.H080_L75_C050
             width: [[10, 0px], [12, 1px]]
         labels:
           font:
             fill: black
-            stroke:
-              color: '#dcb25c' # H080_L75_C050
     local:
       filter:
         class: [unclassified, residential]
