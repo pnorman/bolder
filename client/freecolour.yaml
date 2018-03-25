@@ -1,0 +1,22 @@
+# This file has the RGB values for HLC colours from the freecolour.org system.
+# As an expression of the CIELa*b* and colour coversions, it's a mathematical model, free of copyright.
+# Colours are calculated by Python's colormath module under D50 lighting, and restricted to those that are in-gamut.
+# This is done with
+# def HLC(h,l,c):
+#   return convert_color(LCHabColor(l,c,h), sRGBColor).get_rgb_hex()
+global:
+  freecolour:
+    H000_L00_C000: '#000000'
+    H040_L45_C080: '#c92916'
+    H040_L55_C090: '#f23a22'
+    H060_L65_C070: '#e6832c'
+    H060_L75_C060: '#fda258'
+    H080_L75_C050: '#dcb25c'
+    H080_L85_C050: '#f9cd76'
+    H090_L90_C005: '#e6e2d9'
+    H130_L75_C030: '#a0c28d'
+    H230_L45_C020: '#427184'
+    H230_L45_C030: '#167590'
+    H230_L55_C020: '#5c8b9e'
+    H230_L55_C030: '#3b8eab'
+    H230_L85_C020: '#acdcf1'
