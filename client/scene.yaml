@@ -62,12 +62,12 @@ layers:
           cap: round
           outline:
             color: '#c92916' # H040_L45_C080
-            width: [[10, 0px], [12, 2px]]
+            width: [[10, 0px], [12, 1px]]
         labels:
           font:
             fill: black
             stroke:
-              color: blue #'#d20a08'
+              color: '#c92916' # H040_L45_C080
     major:
       filter:
         class: [trunk, primary]
@@ -84,7 +84,7 @@ layers:
           font:
             fill: black
             stroke:
-              color: '#f89f75'
+              color: '#e6832c' # H060_L65_C070
     minor:
       filter:
         class: [secondary, tertiary]
@@ -101,7 +101,7 @@ layers:
           font:
             fill: black
             stroke:
-              color: '#ffcfb8'
+              color: '#dcb25c' # H080_L75_C050
     local:
       filter:
         class: [unclassified, residential]
