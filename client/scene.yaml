@@ -3,6 +3,7 @@ sources:
   bolder:
     type: MVT
     url: http://localhost:8080/maps/bolder/{z}/{x}/{y}
+    max_zoom: 15
 scene:
   background:
     color: &land-color global.freecolour.H090_L90_C005
