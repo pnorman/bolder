@@ -16,3 +16,21 @@ The colours are defined as globals in [`freecolour.yaml`](freecolour.yaml) and d
 
 - Two spaces per indent. No tabs
 - Widths and other measurements in px, not meters. E.g. `width: 2px`, not `width: 200`
+- When using stops, define them on even zooms unless it is essential for the cartography. E.g. ``width: [[10,0px], [12, 1px], [14, 3px]]``, not ``width: [[10,0px], [13, 1px], [14, 3px]]`` unless it is essential.
+- Omit unnecessary stops unless it significantly aids clarity. E.g. the zoom 12 stop can normally be omitted from ``width: [[10,0px], [12, 2px], [14, 4px]]`` and the output won't change.
+- When defining a line with a fill plus casing using stops, match stop positions on both, even if it isn't necessary. E.g.
+
+  ```yaml
+  lines:
+    width: [[10,0px], [12, 1px], [14, 3px]]
+    outline:
+      width: [[10, 0px], [12, 1px], [14, 2px]]
+  ```
+  not
+
+  ```yaml
+  lines:
+    width: [[10,0px], [12, 1px], [14, 3px]]
+    outline:
+      width: [[10, 0px], [14, 2px]]
+  ```
