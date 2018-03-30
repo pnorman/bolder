@@ -58,11 +58,11 @@ layers:
       draw:
         lines:
           order: 300
-          color: global.freecolour.H040_L55_C090
+          color: global.freecolour.H040_L65_C070
           width: [[6,0.5px], [8, 1.5px], [12, 3px]]
           cap: round
           outline:
-            color: global.freecolour.H040_L45_C080
+            color: global.freecolour.H040_L55_C080
             width: [[10, 0px], [12, 1px]]
         labels:
           font:
@@ -92,7 +92,7 @@ layers:
           width: [[6, 0.4px], [8, 1.0px], [12, 2px]]
           cap: round
           outline:
-            color: global.freecolour.H080_L75_C050
+            color: global.freecolour.H080_L75_C060
             width: [[10, 0px], [12, 1px]]
         labels:
           font:
