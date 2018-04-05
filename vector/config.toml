@@ -267,6 +267,33 @@ password = ""
                           'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
     ) _
   """
+
+  [[providers.layers]]
+  name = "transport_z12"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      name,
+      ref,
+      class,
+      link
+    FROM (
+      SELECT
+          way,
+          name,
+          ref,
+          CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
+          substr(highway, length(highway)-4, 5) = '_link' AS link
+        FROM planet_osm_line
+        WHERE way && !BBOX!
+          AND highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
+                          'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified', 'residential')
+    ) _
+  """
+
   [[providers.layers]]
   name = "forests"
   id_fieldname = "osm_id"
@@ -343,4 +370,9 @@ max_zoom = 9
 name = "transport"
 provider_layer = "osm2pgsql.transport_z10"
 min_zoom = 10
+max_zoom = 11
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.transport_z12"
+min_zoom = 12
 max_zoom = 15
