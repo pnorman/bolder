@@ -43,6 +43,13 @@ layers:
         font:
           fill: global.freecolour.H230_L45_C020
 
+  buildings:
+    data: { source: bolder }
+    draw:
+      polygons:
+        order: 500
+        color: [[10, *land-color], [12, global.freecolour.H080_L85_C020]]
+
   cities:
     data: { source: bolder }
     draw:
