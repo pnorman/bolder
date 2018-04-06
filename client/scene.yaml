@@ -115,12 +115,12 @@ layers:
       draw:
         lines:
           order: 300
-          # At z12 what is drawn is a solid grey line, then it becomes a white line with a black casing.
+          # At z12 what is drawn is a solid grey line, then it becomes a white line with a dark casing.
           color: [[12, global.freecolour.H000_L70_C000], [14, white]]
-          width: [[12, 0.3px], [16, 3px]]
+          width: [[12, 0.3px], [16, 4px]]
           cap: round
           outline:
-            color: [[12, global.freecolour.H000_L70_C000], [16, global.freecolour.H000_L30_C000]]
+            color: [[12, global.freecolour.H000_L70_C000], [14, global.freecolour.H000_L30_C000]]
             width: [[12, 0.2px], [16, 1px]]
         labels:
           font:
