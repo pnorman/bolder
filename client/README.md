@@ -6,14 +6,6 @@ The style is written as a Tangram scene file, and can be used in Tangram JS or T
 
 ### Development
 
-The easiest way to develop is to run the style locally in Tangram JS.
+The easiest way to develop is to run the style locally in Tangram JS. You can do this by serving the scene files locally by running `./serve.py` and browsing to [http://localhost:8081/](http://localhost:8081/) with a recent web browser.
 
-To serve up a demo page, do
-
-```sh
-python -m SimpleHTTPServer 8081
-```
-
-And browse to [http://localhost:8081/](http://localhost:8081/) with a recent web browser.
-
-After editing the scene file, just hit reload in the browser.
+After editing the scene file, just hit reload in the browser. `serve.py` is set up to have the browser not cache the scene files.
