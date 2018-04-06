@@ -68,11 +68,11 @@ layers:
         lines:
           order: 300
           color: global.freecolour.H040_L65_C070
-          width: [[6,0.5px], [8, 1.5px], [12, 3px], [16, 5px]]
+          width: &motorway-width [[6,0.5px], [8, 1.5px], [12, 3px], [16, 6px], [18, 9px]]
           cap: round
           outline:
             color: global.freecolour.H040_L55_C080
-            width: [[10, 0px], [12, 1px], [16, 2px]]
+            width: &motorway-casing-width [[8, 0px], [12, 1px], [16, 2.5px], [18, 4px]]
         labels:
           font:
             fill: black
@@ -84,11 +84,11 @@ layers:
         lines:
           order: 300
           color: global.freecolour.H060_L75_C060
-          width: [[6, 0.4px], [8, 1.0px], [12, 2px]]
+          width: *motorway-width
           cap: round
           outline:
             color: global.freecolour.H060_L65_C070
-            width: [[10, 0px], [12, 1px]]
+            width: *motorway-casing-width
         labels:
           font:
             fill: black
@@ -100,11 +100,11 @@ layers:
         lines:
           order: 300
           color: global.freecolour.H080_L85_C050
-          width: [[6, 0.4px], [8, 1.0px], [12, 2px]]
+          width: *motorway-width
           cap: round
           outline:
             color: global.freecolour.H080_L75_C060
-            width: [[10, 0px], [12, 1px]]
+            width: *motorway-casing-width
         labels:
           font:
             fill: black
