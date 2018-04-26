@@ -19,6 +19,17 @@ styles:
         stroke:
           color: 'white'
           width: 1.75px
+  road_names:
+    base: text
+    draw:
+      font:
+        family: Noto Sans
+        size: 12px
+        fill: 'black'
+        stroke:
+          color: 'white'
+          width: 1px
+
 
 layers:
   water:
@@ -67,60 +78,98 @@ layers:
         lines:
           order: 300
           color: global.freecolour.H040_L65_C070
-          width: &motorway-width [[6,0.5px], [8, 1.5px], [12, 3px], [16, 6px], [18, 9px]]
+          width: &motorway-width [[6,0.5px], [8, 1.5px], [12, 2.75px], [14, 4.5px], [16, 7px], [18, 11px], [20, 17px]]
           cap: round
           outline:
             color: global.freecolour.H040_L55_C080
-            width: &motorway-casing-width [[8, 0px], [12, 1px], [16, 2.5px], [18, 4px]]
+            width: &motorway-casing-width [[8, 0px], [12, 1px], [14, 1.5px], [16, 2.5px], [18, 4px], [20, 6px]]
         labels:
+          order: 800
           font:
             fill: black
     major:
       filter:
         class: [trunk, primary]
         $zoom: { min: 6 }
-      draw:
-        lines:
-          order: 300
-          color: global.freecolour.H060_L75_C060
-          width: *motorway-width
-          cap: round
-          outline:
-            color: global.freecolour.H060_L65_C070
-            width: *motorway-casing-width
-        labels:
-          font:
-            fill: black
+      road:
+        draw:
+          lines:
+            order: 300
+            color: global.freecolour.H060_L75_C060
+            width: *motorway-width
+            cap: round
+            outline:
+              color: global.freecolour.H060_L65_C070
+              width: *motorway-casing-width
+      names:
+        draw:
+          road_names:
+            priority:
+            font:
+              stroke:
+                color: global.freecolour.H060_L75_C060
     minor:
       filter:
         class: [secondary, tertiary]
         $zoom: { min: 9 }
-      draw:
-        lines:
-          order: 300
-          color: global.freecolour.H080_L85_C050
-          width: *motorway-width
-          cap: round
-          outline:
-            color: global.freecolour.H080_L75_C060
-            width: *motorway-casing-width
-        labels:
-          font:
-            fill: black
+      road:
+        draw:
+          lines:
+            order: 300
+            color: global.freecolour.H080_L85_C050
+            width: *motorway-width
+            cap: round
+            outline:
+              color: global.freecolour.H080_L75_C060
+              width: *motorway-casing-width
+      names:
+        filter:
+          - { class: secondary, $zoom: { min: 12 } }
+          - { class: tertiary, $zoom: { min: 14 } }
+        draw:
+          road_names:
+            priority: 90
+            font:
+              stroke:
+                color: global.freecolour.H080_L85_C050
     local:
       filter:
         class: [unclassified, residential]
         $zoom: { min: 12 }
-      draw:
-        lines:
-          order: 300
-          # At z12 what is drawn is a solid grey line, then it becomes a white line with a dark casing.
-          color: [[12, global.freecolour.H000_L70_C000], [14, white]]
-          width: [[12, 0.3px], [16, 4px]]
-          cap: round
-          outline:
-            color: [[12, global.freecolour.H000_L70_C000], [14, global.freecolour.H000_L30_C000]]
-            width: [[12, 0.2px], [16, 1px]]
-        labels:
-          font:
-            fill: black
+      road:
+        thin:
+          filter:
+            $zoom: { max: 13 }
+          draw:
+            lines:
+              order: 300
+              color: global.freecolour.H000_L70_C000
+              width: [[12, 0.5px], [13, 2px]]
+              cap: round
+        normal:
+          filter:
+            $zoom: { min: 13 }
+          draw:
+            lines:
+              order: 300
+              # At z12 what is drawn is a solid grey line, then it becomes a white line with a dark casing.
+              # TODO: Get rid of color interpolation since it doesn't work smoothly
+              color: white
+              width: [[13, 1.6px], [16, 6px]]
+              cap: round
+              outline:
+                color: global.freecolour.H000_L40_C000
+                width: [[13, 0.4px], [16, 2px]]
+      names:
+        filter:
+          - { class: unclassified, $zoom: { min: 14 } }
+          - { class: residential, $zoom: { min: 15 } }
+        draw:
+          road_names:
+            priority: 100
+            font:
+              size: 12px
+              stroke:
+                # When the labels appear the fill is fully white
+                color: white
+                width: 2.5px
