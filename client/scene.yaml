@@ -13,13 +13,12 @@ styles:
     base: text
     draw:
       font:
-        family: Open Sans
+        family: Noto Sans
         size: 14px
-        weight: 600
         fill: 'black'
         stroke:
           color: 'white'
-          width: '1.75px'
+          width: 1.75px
 
 layers:
   water:
