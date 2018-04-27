@@ -7,7 +7,14 @@ Generating vector tiles depends on
 - osm2pgsql 0.90.1 or later with Lua support, loaded with `-G --hstore` and the Lua transform script provided
 - PostgreSQL 9.3 or later. 9.5 or later is recommended and better tested.
 - PostGIS 2.0 or later. 2.3 or later is recommended as earlier versions are not adequately tested with the style.
-- Python 3.4 with PyYaml, PsycoPG2, and requests. On Debian and Ubuntu, these are the `python3-yaml`, `python3-psycopg2`, and `python3-requests`.
+- Python 3.4 with PyYaml, PsycoPG2, and requests.
+
+On Debian or Ubuntu, these can be installed with
+
+```sh
+sudo apt-get install postgresql postgis osm2pgsql \
+    python3-yaml python3-psycopg2, python3-requests
+```
 
 ## Installation
 
