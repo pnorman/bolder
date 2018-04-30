@@ -13,7 +13,7 @@ On Debian or Ubuntu, these can be installed with
 
 ```sh
 sudo apt-get install postgresql postgis osm2pgsql \
-    python3-yaml python3-psycopg2, python3-requests
+    python3-yaml python3-psycopg2 python3-requests
 ```
 
 ## Installation
