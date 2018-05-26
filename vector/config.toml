@@ -228,6 +228,7 @@ password = ""
       name,
       ref,
       class,
+      railway,
       link
     FROM (
       SELECT
@@ -235,10 +236,13 @@ password = ""
           name,
           ref,
           highway AS class,
+          railway,
           FALSE AS link
         FROM planet_osm_roads
         WHERE way && !BBOX!
-          AND highway IN ('motorway', 'trunk', 'primary', 'secondary')
+          AND (highway IN ('motorway', 'trunk', 'primary', 'secondary')
+            OR railway IN ('rail', 'narrow_gague', 'funicular')
+            AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
     ) _
   """
 
@@ -253,6 +257,7 @@ password = ""
       name,
       ref,
       class,
+      railway,
       link
     FROM (
       SELECT
@@ -260,11 +265,14 @@ password = ""
           name,
           ref,
           CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
+          railway,
           substr(highway, length(highway)-4, 5) = '_link' AS link
         FROM planet_osm_line
         WHERE way && !BBOX!
-          AND highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
-                          'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
+          AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
+                           'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
+            OR railway IN ('rail', 'narrow_gague', 'funicular')
+            AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
     ) _
   """
 
@@ -279,6 +287,7 @@ password = ""
       name,
       ref,
       class,
+      railway,
       link
     FROM (
       SELECT
@@ -286,11 +295,13 @@ password = ""
           name,
           ref,
           CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
+          railway,
           substr(highway, length(highway)-4, 5) = '_link' AS link
         FROM planet_osm_line
         WHERE way && !BBOX!
-          AND highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
+          AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
                           'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified', 'residential')
+            OR railway IN ('rail', 'narrow_gague', 'funicular'))
     ) _
   """
 
