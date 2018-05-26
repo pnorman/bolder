@@ -288,6 +288,7 @@ password = ""
       ref,
       class,
       railway,
+      service,
       link
     FROM (
       SELECT
@@ -296,6 +297,7 @@ password = ""
           ref,
           CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
           railway,
+          service,
           substr(highway, length(highway)-4, 5) = '_link' AS link
         FROM planet_osm_line
         WHERE way && !BBOX!

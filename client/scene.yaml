@@ -74,16 +74,26 @@ layers:
       filter:
         railway: [rail]
         $zoom: { min: 9 }
-      draw:
-        lines:
-          order: 310
-          color: white
-          dash_background_color: global.freecolour.H000_L55_C000
-          dash: [6, 6]
-          width: [[12, 1px], [16, 2px]]
-          outline:
-            color: global.freecolour.H000_L55_C000
-            width: [[12, 0.5px], [16, 1.5px]]
+      major:
+        draw:
+          lines:
+            order: 310
+            color: white
+            dash_background_color: global.freecolour.H000_L55_C000
+            dash: [6, 6]
+            width: [[12, 1px], [16, 2px]]
+            outline:
+              color: global.freecolour.H000_L55_C000
+              width: [[12, 0.5px], [16, 1.5px]]
+      ssy:
+        filter:
+          service: [spur, siding, yard]
+        draw:
+          lines:
+            dash_background_color: global.freecolour.H000_L85_C000
+            outline:
+              color: global.freecolour.H000_L85_C000
+
     motorway:
       filter:
         class: [motorway]
