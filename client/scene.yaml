@@ -72,7 +72,7 @@ layers:
       $geometry: line
     rail:
       filter:
-        railway: [rail]
+        railway: [rail, narrow_gauge, funicular]
         $zoom: { min: 9 }
       major:
         draw:
