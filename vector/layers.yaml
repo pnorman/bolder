@@ -1,7 +1,0 @@
-all:
-  - water
-layers:
-  water:
-    template: water.jinja2
-    start_zoom: 0
-    geometry_types: [Polygon, MultiPolygon]
