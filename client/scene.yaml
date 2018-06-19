@@ -6,7 +6,7 @@ sources:
     max_zoom: 15
 scene:
   background:
-    color: &land-color global.freecolour.H090_L90_C005
+    color: &land-color global.freecolour.H060_L95_C005
 
 styles:
   labels:
@@ -30,28 +30,27 @@ styles:
           color: 'white'
           width: 1px
 
-
 layers:
   water:
     data: { source: bolder }
     draw:
       polygons:
         order: 2
-        color: &water-color global.freecolour.H230_L85_C020
+        color: &water-color global.freecolour.H250_L75_C020
 
   forests:
     data: { source: bolder }
     draw:
       polygons:
         order: 10
-        color: global.freecolour.H130_L75_C030
+        color: global.freecolour.H120_L85_C030
 
   water_names:
     data: { source: bolder }
     draw:
       labels:
         font:
-          fill: global.freecolour.H230_L45_C020
+          fill: global.freecolour.H250_L45_C020
 
   buildings:
     data: { source: bolder }
