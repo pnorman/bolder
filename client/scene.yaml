@@ -12,6 +12,7 @@ styles:
   labels:
     base: text
     draw:
+      priority: 900
       font:
         family: Noto Sans
         size: 14px
@@ -61,10 +62,36 @@ layers:
 
   cities:
     data: { source: bolder }
-    draw:
-      labels:
-        order: 700
-
+    city:
+      filter:
+        place: [city]
+        $zoom: { min: 8 }
+      draw:
+        labels:
+          order: 700
+          priority: 100
+          font:
+            size: [[8, 14px], [10, 17px], [12, 20px]]
+    town:
+      filter:
+        place: [town]
+        $zoom: { min: 9 }
+      draw:
+        labels:
+          order: 700
+          priority: 101
+          font:
+            size: [[8, 12px], [12, 17px], [14, 20px]]
+    village:
+      filter:
+        place: [village]
+        $zoom: { min: 12 }
+      draw:
+        labels:
+          order: 700
+          priority: 102
+          font:
+            size: [[12, 14px], [14, 17px], [15, 20px]]
   transport:
     data: { source: bolder }
     filter:
