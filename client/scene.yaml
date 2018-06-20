@@ -13,6 +13,19 @@ styles:
     base: text
     draw:
       priority: 900
+      text_wrap: 7
+      font:
+        family: Noto Sans
+        size: 14px
+        fill: 'black'
+        stroke:
+          color: 'white'
+          width: 1.75px
+  linelabels:
+    base: text
+    draw:
+      priority: 900
+      text_wrap: false
       font:
         family: Noto Sans
         size: 14px
@@ -49,7 +62,7 @@ layers:
   water_names:
     data: { source: bolder }
     draw:
-      labels:
+      linelabels:
         font:
           fill: global.freecolour.H250_L45_C020
 
