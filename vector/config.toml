@@ -398,7 +398,25 @@ password = ""
     ) _
   """
 
-
+[[providers.layers]]
+  name = "poi_areas"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      amenity
+    FROM (
+      SELECT
+          way,
+          amenity
+        FROM planet_osm_polygon
+        WHERE way && !BBOX!
+          AND (amenity IN ('hospital', 'school', 'college', 'university'))
+          AND way_area > pixel_size(12)*4 -- working around tegola #343
+    ) _
+  """
 
 [[maps]]
 name = "bolder"
@@ -438,6 +456,12 @@ max_zoom = 15
 [[maps.layers]]
 name = "landuse"
 provider_layer = "osm2pgsql.landuse"
+min_zoom = 12
+max_zoom = 15
+
+[[maps.layers]]
+name = "poi_areas"
+provider_layer = "osm2pgsql.poi_areas"
 min_zoom = 12
 max_zoom = 15
 

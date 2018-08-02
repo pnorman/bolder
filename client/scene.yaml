@@ -86,7 +86,22 @@ layers:
         polygons:
           order: 100
           color: '#eee8cd' #lch(92,14,95)
-
+  poi_areas:
+    data: { source: bolder }
+    healthcare:
+      filter:
+        amenity: [hospital]
+      draw:
+        polygons:
+          order: 105
+          color: '#fee0f2' #lch(92,14,340)
+    education:
+      filter:
+        amenity: [school, college, university]
+      draw:
+        polygons:
+          order: 105
+          color: '#eee5f4' #lch(92,8,310)
   water_names:
     data: { source: bolder }
     draw:
