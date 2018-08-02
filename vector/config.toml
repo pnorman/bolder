@@ -308,26 +308,7 @@ password = ""
   """
 
   [[providers.layers]]
-  name = "buildings_z10"
-  id_fieldname = "osm_id"
-  geometry_fieldname = "way"
-  sql = """
-  SELECT
-      row_number() OVER () AS osm_id,
-      ST_AsBinary(way) AS way
-    FROM (
-      SELECT
-          way
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND building IS NOT NULL
-          AND building != 'no'
-          AND way_area > pixel_size(10) -- working around tegola #343
-    ) _
-  """
-
-  [[providers.layers]]
-  name = "buildings_z12"
+  name = "buildings_z13"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
   sql = """
@@ -391,14 +372,8 @@ min_zoom = 4
 
 [[maps.layers]]
 name = "buildings"
-provider_layer = "osm2pgsql.buildings_z10"
-min_zoom = 10
-max_zoom = 11
-
-[[maps.layers]]
-name = "buildings"
-provider_layer = "osm2pgsql.buildings_z12"
-min_zoom = 12
+provider_layer = "osm2pgsql.buildings_z13"
+min_zoom = 13
 max_zoom = 15
 
 [[maps.layers]]
