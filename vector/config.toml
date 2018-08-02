@@ -339,9 +339,67 @@ password = ""
         FROM planet_osm_polygon
         WHERE way && !BBOX!
           AND (landuse = 'forest' OR "natural" = 'wood')
-          AND way_area > pixel_size(9)*4 -- working around tegola #343
+          AND way_area > pixel_size(15)*4 -- working around tegola #343
     ) _
   """
+  [[providers.layers]]
+  name = "parks"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way
+    FROM (
+      SELECT
+          way
+        FROM planet_osm_polygon
+        WHERE way && !BBOX!
+          AND (leisure = 'park')
+          AND way_area > pixel_size(12)*4 -- working around tegola #343
+    ) _
+  """
+
+  [[providers.layers]]
+  name = "regional_parks"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way
+    FROM (
+      SELECT
+          way
+        FROM planet_osm_polygon
+        WHERE way && !BBOX!
+          AND (boundary = 'national_park' OR leisure = 'nature_reserve')
+          AND way_area > pixel_size(12)*4 -- working around tegola #343
+    ) _
+  """
+
+[[providers.layers]]
+  name = "landuse"
+  id_fieldname = "osm_id"
+  geometry_fieldname = "way"
+  sql = """
+  SELECT
+      row_number() OVER () AS osm_id,
+      ST_AsBinary(way) AS way,
+      landuse
+    FROM (
+      SELECT
+          way,
+          landuse
+        FROM planet_osm_polygon
+        WHERE way && !BBOX!
+          AND (landuse IN ('retail', 'commercial', 'industrial', 'railway'))
+          AND way_area > pixel_size(12)*4 -- working around tegola #343
+    ) _
+  """
+
+
+
 [[maps]]
 name = "bolder"
 
@@ -369,6 +427,19 @@ min_zoom = 10
 name = "forests"
 provider_layer = "osm2pgsql.forests"
 min_zoom = 4
+max_zoom = 15
+
+[[maps.layers]]
+name = "parks"
+provider_layer = "osm2pgsql.parks"
+min_zoom = 12
+max_zoom = 15
+
+[[maps.layers]]
+name = "landuse"
+provider_layer = "osm2pgsql.landuse"
+min_zoom = 12
+max_zoom = 15
 
 [[maps.layers]]
 name = "buildings"

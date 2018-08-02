@@ -48,16 +48,44 @@ layers:
     data: { source: bolder }
     draw:
       polygons:
-        order: 2
+        order: 300
         color: &water-color '#b1cae0' #lch(80,15,250)
 
   forests:
     data: { source: bolder }
     draw:
       polygons:
-        order: 10
-        #TODO: Alter for lz
+        order: 200
+        color: '#cbd9b3' #lch(85,20,120)
+  parks:
+    data: { source: bolder }
+    draw:
+      polygons:
+        order: 110
         color: '#e4efd1' #lch(93,15,120)
+  # regional_parks:
+  #   data: { source: bolder }
+  #   draw:
+  #     polygons:
+  #       blend: inlay
+  #       order: 200
+  #       color: rgba(255, 0, 0,.9 ) # rgba(75, 118, 50, 0.8) #lch(45,55,120)
+  landuse:
+    data: { source: bolder }
+    retail:
+      filter:
+        landuse: [retail, commercial]
+      draw:
+        polygons:
+          order: 100
+          color: '#f5e6ce' #lch(92,14,80)
+    industrial:
+      filter:
+        landuse: [industrial, railway]
+      draw:
+        polygons:
+          order: 100
+          color: '#eee8cd' #lch(92,14,95)
 
   water_names:
     data: { source: bolder }
@@ -116,7 +144,7 @@ layers:
       major:
         draw:
           lines:
-            order: 310
+            order: 610
             color: white
             dash_background_color: '#848484' #lch(55,0,0)
             dash: [6, 6]
@@ -133,19 +161,22 @@ layers:
             outline:
               color: '#d4d4d4' #lch(85,0,0)
 
+    # All the road widths are based on # m=0.16e^(0.24z)
     motorway:
       filter:
         class: [motorway]
-        $zoom: { min: 5 }
+        $zoom: { min: 4 }
       draw:
         lines:
-          order: 300
+          order: 600
           color: '#f9b887' #lch(80,40,60)
-          width: &motorway-width [[6,0.5px], [8, 1.5px], [12, 2.75px], [14, 4.5px], [16, 7px], [18, 11px], [20, 17px]]
+          # m for z4-z7, 0.6*m for z8+
+          width: &motorway-width [[4, 0.42px], [6, .68px], [8, 0.65px], [12, 1.7px], [16, 4.5px], [20, 11.67px]]
           cap: round
           outline:
             color: '#e5995d' #lch(70,50,60)
-            width: &motorway-casing-width [[8, 0px], [12, 1px], [14, 1.5px], [16, 2.5px], [18, 4px], [20, 6px]]
+            #0.2*m for z8+
+            width: &motorway-casing-width [[6, 0], [8, 0.22px], [12, .57px], [16, 1.5px], [20, 3.9px]]
         labels:
           order: 800
           font:
@@ -157,13 +188,15 @@ layers:
       road:
         draw:
           lines:
-            order: 300
+            order: 600
             color: '#fcd09b' #lch(85,35,70)
-            width: *motorway-width
+            # 0.95*m for z6-z9, 0.55*m for z10+
+            width: [[6, 0.64px], [8, 1.0px], [10, 1.0px], [12, 1.6px], [16, 4.1px], [20, 11px]]
             cap: round
             outline:
               color: '#d2a167' #lch(70,40,70)
-              width: *motorway-casing-width
+              #0.2*m for z10+
+              width: [[8, 0px], [12, .57px], [16, 1.5px], [20, 3.9px]]
       names:
         draw:
           road_names:
@@ -178,13 +211,14 @@ layers:
       road:
         draw:
           lines:
-            order: 300
+            order: 600
             color: '#f4dfbd' #lch(90,20,80)
-            width: *motorway-width
+            # 0.88*m for z9-z11, 0.48*m for z12+
+            width: [[8, 0.96px], [10, 1.6px], [12, 1.37px], [16, 3.6px], [20, 9.33px]]
             cap: round
             outline:
               color: '#dbc398' #lch(80,25,80)
-              width: *motorway-casing-width
+              width: [[10, 0px], [12, .57px], [16, 1.5px], [20, 3.9px]]
       names:
         filter:
           - { class: secondary, $zoom: { min: 12 } }
@@ -202,13 +236,13 @@ layers:
       road:
         draw:
           lines:
-            order: 300
+            order: 600
             color: white
-            width: *motorway-width
+            width: [[8, 0.96px], [10, 1.6px], [12, 1.37px], [16, 3.6px], [20, 9.33px]]
             cap: round
             outline:
               color: '#d4d4d4' #lch(85,0,0)
-              width: *motorway-casing-width
+              width: [[10, 0px], [12, .57px], [16, 1.5px], [20, 3.9px]]
       names:
         filter:
           - { class: unclassified, $zoom: { min: 12 } }
