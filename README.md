@@ -8,4 +8,4 @@ This is a client-side map style for use with OpenStreetMap data. The style can b
 
 2. Check that [`http://localhost:8080/`](http://localhost:8080/) has a Tegola preview page.
 
-3. Serve the client style with `cd client && ./serve.py` and open [`http://localhost:8081/`](http://localhost:8081/) in a web browser. Detailed instructions can be found [in the client README](vector/README.md).
+3. Serve the client style with `cd client && ./serve.py` and open [`http://localhost:8081/`](http://localhost:8081/) in a web browser. Detailed instructions can be found [in the client README](client/README.md).
