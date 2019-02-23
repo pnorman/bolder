@@ -77,11 +77,20 @@ CREATE INDEX "{name}_geohash"
 CLUSTER "{temp_schema}"."{name}" USING "{name}_geohash";
 DROP INDEX "{temp_schema}"."{name}_geohash";
 CREATE INDEX ON "{temp_schema}"."{name}" USING GIST (way) WITH (fillfactor=100);
-ANALYZE "{temp_schema}"."{name}";
 '''.format(name=self._name, temp_schema=self._temp_schema))
       # Reset autovacuum. The table is static, so this doesn't really matter since it'll never need a vacuum.
       cur.execute('''ALTER TABLE "{temp_schema}"."{name}" SET ( autovacuum_enabled = FALSE );'''.format(name=self._name, temp_schema=self._temp_schema))
     self._conn.commit()
+
+    # VACUUM can't be run in transaction, so autocommit needs to be turned on
+    old_autocommit = self._conn.autocommit
+    try:
+      self._conn.autocommit = True
+      cur.execute('''
+      VACUUM ANALYZE "{temp_schema}"."{name}";
+      '''.format(name=self._name, temp_schema=self._temp_schema))
+    except:
+      self._conn.autocommit = old_autocommit
 
   def replace(self, new_last_modified):
     with self._conn.cursor() as cur:
