@@ -15,6 +15,7 @@ password = ""
   name = "ne_water"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Polygon"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -36,6 +37,7 @@ password = ""
   name = "lz_water"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Polygon"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -53,7 +55,7 @@ password = ""
           AND (waterway = 'riverbank'
             OR landuse = 'reservoir'
             OR "natural" = 'water')
-          AND way_area > pixel_size(9)*4 -- working around tegola #343
+          AND way_area > pixel_size(!ZOOM!)*0.25
     ) _
   """
 
@@ -61,6 +63,7 @@ password = ""
   name = "water"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Polygon"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -78,7 +81,7 @@ password = ""
           AND (waterway = 'riverbank'
             OR landuse = 'reservoir'
             OR "natural" = 'water')
-          AND way_area > pixel_size(12)*4 -- working around tegola #343
+          AND way_area > pixel_size(!ZOOM!)*0.25
     ) _
   """
 
@@ -86,6 +89,7 @@ password = ""
   name = "water_names"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Point"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -103,7 +107,7 @@ password = ""
           AND (landuse = 'reservoir'
             OR "natural" = 'water')
           AND NOT water = 'river'
-          AND way_area > pixel_size(12)*16*16 -- working around tegola #343
+          AND way_area > pixel_size(!ZOOM!)*16*16
       UNION ALL
       SELECT
           way,
@@ -121,6 +125,7 @@ password = ""
   name = "cities"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Point"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -329,6 +334,7 @@ password = ""
   name = "forests"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Polygon"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -339,13 +345,14 @@ password = ""
         FROM planet_osm_polygon
         WHERE way && !BBOX!
           AND (landuse = 'forest' OR "natural" = 'wood')
-          AND way_area > pixel_size(15)*4 -- working around tegola #343
+          AND way_area > pixel_size(!ZOOM!)*0.25
     ) _
   """
   [[providers.layers]]
   name = "parks"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Polygon"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -356,7 +363,7 @@ password = ""
         FROM planet_osm_polygon
         WHERE way && !BBOX!
           AND (leisure = 'park')
-          AND way_area > pixel_size(12)*4 -- working around tegola #343
+          AND way_area > pixel_size(!ZOOM!)*0.25
     ) _
   """
 
@@ -364,6 +371,7 @@ password = ""
   name = "regional_parks"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Polygon"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -374,7 +382,7 @@ password = ""
         FROM planet_osm_polygon
         WHERE way && !BBOX!
           AND (boundary = 'national_park' OR leisure = 'nature_reserve')
-          AND way_area > pixel_size(12)*4 -- working around tegola #343
+          AND way_area > pixel_size(!ZOOM!)*0.25
     ) _
   """
 
@@ -382,6 +390,7 @@ password = ""
   name = "landuse"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Polygon"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -394,7 +403,7 @@ password = ""
         FROM planet_osm_polygon
         WHERE way && !BBOX!
           AND (landuse IN ('retail', 'commercial', 'industrial', 'railway'))
-          AND way_area > pixel_size(12)*4 -- working around tegola #343
+          AND way_area > pixel_size(!ZOOM!)*0.25
     ) _
   """
 
@@ -402,6 +411,7 @@ password = ""
   name = "poi_areas"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "Polygon"
   sql = """
   SELECT
       row_number() OVER () AS osm_id,
@@ -414,7 +424,7 @@ password = ""
         FROM planet_osm_polygon
         WHERE way && !BBOX!
           AND (amenity IN ('hospital', 'school', 'college', 'university'))
-          AND way_area > pixel_size(12)*4 -- working around tegola #343
+          AND way_area > pixel_size(!ZOOM!)*0.25
     ) _
   """
 
