@@ -135,7 +135,7 @@ SELECT
 """
 
 [[providers.layers]]
-name = "transport_z5"
+name = "lz_transport"
 id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "LineString"
@@ -407,26 +407,10 @@ provider_layer = "osm2pgsql.cities"
 min_zoom = 6
 max_zoom = 15
 
-# This should be 6-9 and 10+, but needs to be per layer to work around Tegola #343.
 [[maps.layers]]
 name = "transport"
-provider_layer = "osm2pgsql.transport_z5"
+provider_layer = "osm2pgsql.lz_transport"
 min_zoom = 5
-max_zoom = 5
-[[maps.layers]]
-name = "transport"
-provider_layer = "osm2pgsql.transport_z6"
-min_zoom = 6
-max_zoom = 7
-[[maps.layers]]
-name = "transport"
-provider_layer = "osm2pgsql.transport_z8"
-min_zoom = 8
-max_zoom = 8
-[[maps.layers]]
-name = "transport"
-provider_layer = "osm2pgsql.transport_z9"
-min_zoom = 9
 max_zoom = 9
 [[maps.layers]]
 name = "transport"
