@@ -118,7 +118,8 @@ geometry_type = "LineString"
 sql = """
 SELECT
     ST_AsBinary(way) AS way,
-    osm_id
+    osm_id,
+    admin_level::integer
   FROM planet_osm_roads
   WHERE way && !BBOX!
     AND boundary = 'administrative'
