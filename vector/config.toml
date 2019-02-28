@@ -152,8 +152,7 @@ geometry_fieldname = "way"
 geometry_type = "LineString"
 sql = """
 SELECT
-    ST_AsBinary(way) AS way,
-    osm_id,
+    ST_AsBinary(ST_Union(way)) AS way,
     name,
     ref,
     highway AS class,
@@ -167,6 +166,7 @@ SELECT
       OR railway IN ('rail', 'narrow_gague', 'funicular')
         AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard'))
         AND !ZOOM! >=9)
+    AND GROUP BY name, ref, highway
 """
 
 [[providers.layers]]
