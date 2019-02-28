@@ -1,6 +1,15 @@
 CREATE OR REPLACE FUNCTION pixel_area (z integer)
   RETURNS float
+  -- approx (40 000 000 m / 256 px)^2
   AS 'SELECT (24505721471.3958/(2^(2*z)));'
+  LANGUAGE SQL
+  IMMUTABLE
+  STRICT;
+
+CREATE OR REPLACE FUNCTION pixel_size (z integer)
+  RETURNS float
+  -- approx 40 000 000 m / 256 px
+  AS 'SELECT (156544.3066015625/(2^z));'
   LANGUAGE SQL
   IMMUTABLE
   STRICT;
