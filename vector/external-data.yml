@@ -82,3 +82,15 @@ sources:
         - ne_10m_populated_places_simple.prj
         - ne_10m_populated_places_simple.shp
         - ne_10m_populated_places_simple.shx
+  ne_populated_places:
+    type: shp
+    url: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip
+    file: ne_110m_admin_0_boundary_lines_land.shp
+    ogropts: *ne_opts
+    archive:
+      format: zip
+      files:
+        - ne_110m_admin_0_boundary_lines_land.dbf
+        - ne_110m_admin_0_boundary_lines_land.prj
+        - ne_110m_admin_0_boundary_lines_land.shp
+        - ne_110m_admin_0_boundary_lines_land.shx
