@@ -357,7 +357,7 @@ min_zoom = 10
 [[maps.layers]]
 name = "forests"
 provider_layer = "osm2pgsql.forests"
-min_zoom = 5
+min_zoom = 7
 max_zoom = 15
 
 [[maps.layers]]
