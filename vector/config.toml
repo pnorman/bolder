@@ -13,24 +13,18 @@ password = ""
 
   [[providers.layers]]
   name = "ne_water"
-  id_fieldname = "osm_id"
   geometry_fieldname = "way"
   geometry_type = "Polygon"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way
-    FROM (
-    SELECT
-        way
-      FROM ne_ocean
-      WHERE way && !BBOX!
-    UNION ALL
-    SELECT
-        way
-      FROM ne_lake
-      WHERE way && !BBOX!
-    ) _
+    FROM ne_ocean
+    WHERE way && !BBOX!
+  UNION ALL
+  SELECT
+      ST_AsBinary(way) AS way
+    FROM ne_lake
+    WHERE way && !BBOX!
   """
 
   [[providers.layers]]
@@ -40,23 +34,20 @@ password = ""
   geometry_type = "Polygon"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
-      ST_AsBinary(way) AS way
-    FROM (
-      SELECT
-          way
-        FROM simplified_ocean_polygons
-        WHERE way && !BBOX!
-      UNION ALL
-      SELECT
-          way
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND (waterway = 'riverbank'
-            OR landuse = 'reservoir'
-            OR "natural" = 'water')
-          AND way_area > pixel_size(!ZOOM!)*0.25
-    ) _
+      ST_AsBinary(way) AS way,
+      NULL as osm_id
+    FROM simplified_ocean_polygons
+    WHERE way && !BBOX!
+  UNION ALL
+  SELECT
+      ST_AsBinary(way) AS way,
+      osm_id
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (waterway = 'riverbank'
+        OR landuse = 'reservoir'
+        OR "natural" = 'water')
+      AND way_area > pixel_size(!ZOOM!)*0.25
   """
 
   [[providers.layers]]
@@ -66,23 +57,20 @@ password = ""
   geometry_type = "Polygon"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
+      NULL AS osm_id,
       ST_AsBinary(way) AS way
-    FROM (
-      SELECT
-          way
-        FROM ocean_polygons
-        WHERE way && !BBOX!
-      UNION ALL
-      SELECT
-          way
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND (waterway = 'riverbank'
-            OR landuse = 'reservoir'
-            OR "natural" = 'water')
-          AND way_area > pixel_size(!ZOOM!)*0.25
-    ) _
+    FROM ocean_polygons
+    WHERE way && !BBOX!
+  UNION ALL
+  SELECT
+      osm_id,
+      ST_AsBinary(way) AS way
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (waterway = 'riverbank'
+        OR landuse = 'reservoir'
+        OR "natural" = 'water')
+      AND way_area > pixel_size(!ZOOM!)*0.25
   """
 
   [[providers.layers]]
@@ -92,33 +80,27 @@ password = ""
   geometry_type = "Point"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
-      ST_AsBinary(way) AS way,
+      ST_AsBinary(ST_PointOnSurface(way)) AS way,
+      osm_id,
       name,
-      area
-    FROM (
-      SELECT
-          ST_PointOnSurface(way) AS way,
-          name,
-          way_area AS area
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND name IS NOT NULL
-          AND (landuse = 'reservoir'
-            OR "natural" = 'water')
-          AND NOT water = 'river'
-          AND way_area > pixel_size(!ZOOM!)*16*16
-      UNION ALL
-      SELECT
-          way,
-          name,
-          NULL AS area
-        FROM planet_osm_line
-        WHERE way && !BBOX!
-          AND name IS NOT NULL
-          AND waterway = 'river'
-    ) _
+      way_area AS area
+    FROM planet_osm_polygon
     WHERE way && !BBOX!
+      AND name IS NOT NULL
+      AND (landuse = 'reservoir'
+        OR "natural" = 'water')
+      AND NOT water = 'river'
+      AND way_area > pixel_size(!ZOOM!)*16*16
+  UNION ALL
+  SELECT
+      ST_AsBinary(way) AS way,
+      osm_id,
+      name,
+      NULL AS area
+    FROM planet_osm_line
+    WHERE way && !BBOX!
+      AND name IS NOT NULL
+      AND waterway = 'river'
   """
 
   [[providers.layers]]
@@ -128,157 +110,114 @@ password = ""
   geometry_type = "Point"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       name,
       place
-    FROM (
-      SELECT
-          way,
-          name,
-          place
-        FROM planet_osm_point
-        WHERE way && !BBOX!
-          AND (place = 'city'
-            OR place = 'town' AND 8 < !ZOOM!
-            OR place = 'village' AND 10 < !ZOOM!
-            OR place = 'hamlet' AND 12 < !ZOOM!)
-          AND name IS NOT NULL
-    ) _
+    FROM planet_osm_point
+    WHERE way && !BBOX!
+      AND (place = 'city'
+        OR place = 'town' AND 8 < !ZOOM!
+        OR place = 'village' AND 10 < !ZOOM!
+        OR place = 'hamlet' AND 12 < !ZOOM!)
+      AND name IS NOT NULL
   """
 
   [[providers.layers]]
   name = "transport_z5"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "LineString"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       name,
       ref,
-      class,
-      link
-    FROM (
-      SELECT
-          way,
-          name,
-          ref,
-          highway AS class,
-          FALSE AS link
-        FROM planet_osm_roads
-        WHERE way && !BBOX!
-          AND highway IN ('motorway')
-    ) _
+      highway AS class,
+      FALSE AS link
+    FROM planet_osm_roads
+    WHERE way && !BBOX!
+      AND highway IN ('motorway')
   """
 
   [[providers.layers]]
   name = "transport_z6"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "LineString"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       name,
       ref,
-      class,
-      link
-    FROM (
-      SELECT
-          way,
-          name,
-          ref,
-          highway AS class,
-          FALSE AS link
-        FROM planet_osm_roads
-        WHERE way && !BBOX!
-          AND highway IN ('motorway', 'trunk')
-    ) _
+      highway AS class,
+      FALSE AS link
+    FROM planet_osm_roads
+    WHERE way && !BBOX!
+      AND highway IN ('motorway', 'trunk')
   """
 
   [[providers.layers]]
   name = "transport_z8"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "LineString"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       name,
       ref,
-      class,
-      link
-    FROM (
-      SELECT
-          way,
-          name,
-          ref,
-          highway AS class,
-          FALSE AS link
-        FROM planet_osm_roads
-        WHERE way && !BBOX!
-          AND highway IN ('motorway', 'trunk', 'primary')
-    ) _
+      highway AS class,
+      FALSE AS link
+    FROM planet_osm_roads
+    WHERE way && !BBOX!
+      AND highway IN ('motorway', 'trunk', 'primary')
   """
 
   [[providers.layers]]
   name = "transport_z9"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "LineString"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       name,
       ref,
-      class,
+      highway AS class,
       railway,
-      link
-    FROM (
-      SELECT
-          way,
-          name,
-          ref,
-          highway AS class,
-          railway,
-          FALSE AS link
-        FROM planet_osm_roads
-        WHERE way && !BBOX!
-          AND (highway IN ('motorway', 'trunk', 'primary', 'secondary')
-            OR railway IN ('rail', 'narrow_gague', 'funicular')
-            AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
-    ) _
+      FALSE AS link
+    FROM planet_osm_roads
+    WHERE way && !BBOX!
+      AND (highway IN ('motorway', 'trunk', 'primary', 'secondary')
+        OR railway IN ('rail', 'narrow_gague', 'funicular')
+        AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
   """
 
   [[providers.layers]]
   name = "transport_z10"
   id_fieldname = "osm_id"
   geometry_fieldname = "way"
+  geometry_type = "LineString"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       name,
       ref,
-      class,
+      CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
       railway,
-      link
-    FROM (
-      SELECT
-          way,
-          name,
-          ref,
-          CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
-          railway,
-          substr(highway, length(highway)-4, 5) = '_link' AS link
-        FROM planet_osm_line
-        WHERE way && !BBOX!
-          AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
-                           'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
-            OR railway IN ('rail', 'narrow_gague', 'funicular')
-            AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
-    ) _
+      substr(highway, length(highway)-4, 5) = '_link' AS link
+    FROM planet_osm_line
+    WHERE way && !BBOX!
+      AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
+                        'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
+        OR railway IN ('rail', 'narrow_gague', 'funicular')
+        AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
   """
 
   [[providers.layers]]
@@ -287,29 +226,19 @@ password = ""
   geometry_fieldname = "way"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       name,
       ref,
-      class,
+      CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
       railway,
       service,
-      link
-    FROM (
-      SELECT
-          way,
-          name,
-          ref,
-          CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
-          railway,
-          service,
-          substr(highway, length(highway)-4, 5) = '_link' AS link
-        FROM planet_osm_line
-        WHERE way && !BBOX!
-          AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
-                          'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified', 'residential')
-            OR railway IN ('rail', 'narrow_gague', 'funicular'))
-    ) _
+      substr(highway, length(highway)-4, 5) = '_link' AS link
+    FROM planet_osm_line
+    WHERE way && !BBOX!
+      AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
+                      'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified', 'residential')
+        OR railway IN ('rail', 'narrow_gague', 'funicular'))
   """
 
   [[providers.layers]]
@@ -318,16 +247,12 @@ password = ""
   geometry_fieldname = "way"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
-      ST_AsBinary(way) AS way
-    FROM (
-      SELECT
-          way
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND building IS NOT NULL
-          AND building != 'no'
-    ) _
+      ST_AsBinary(way) AS way,
+      osm_id
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND building IS NOT NULL
+      AND building != 'no'
   """
 
   [[providers.layers]]
@@ -337,16 +262,12 @@ password = ""
   geometry_type = "Polygon"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
-      ST_AsBinary(way) AS way
-    FROM (
-      SELECT
-          way
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND (landuse = 'forest' OR "natural" = 'wood')
-          AND way_area > pixel_size(!ZOOM!)*0.25
-    ) _
+      ST_AsBinary(way) AS way,
+      osm_id
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (landuse = 'forest' OR "natural" = 'wood')
+      AND way_area > pixel_size(!ZOOM!)*0.25
   """
   [[providers.layers]]
   name = "parks"
@@ -355,16 +276,12 @@ password = ""
   geometry_type = "Polygon"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
-      ST_AsBinary(way) AS way
-    FROM (
-      SELECT
-          way
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND (leisure = 'park')
-          AND way_area > pixel_size(!ZOOM!)*0.25
-    ) _
+      ST_AsBinary(way) AS way,
+      osm_id
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (leisure = 'park')
+      AND way_area > pixel_size(!ZOOM!)*0.25
   """
 
   [[providers.layers]]
@@ -374,16 +291,12 @@ password = ""
   geometry_type = "Polygon"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
-      ST_AsBinary(way) AS way
-    FROM (
-      SELECT
-          way
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND (boundary = 'national_park' OR leisure = 'nature_reserve')
-          AND way_area > pixel_size(!ZOOM!)*0.25
-    ) _
+      ST_AsBinary(way) AS way,
+      osm_id
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (boundary = 'national_park' OR leisure = 'nature_reserve')
+      AND way_area > pixel_size(!ZOOM!)*0.25
   """
 
 [[providers.layers]]
@@ -393,18 +306,13 @@ password = ""
   geometry_type = "Polygon"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       landuse
-    FROM (
-      SELECT
-          way,
-          landuse
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND (landuse IN ('retail', 'commercial', 'industrial', 'railway'))
-          AND way_area > pixel_size(!ZOOM!)*0.25
-    ) _
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (landuse IN ('retail', 'commercial', 'industrial', 'railway'))
+      AND way_area > pixel_size(!ZOOM!)*0.25
   """
 
 [[providers.layers]]
@@ -414,18 +322,13 @@ password = ""
   geometry_type = "Polygon"
   sql = """
   SELECT
-      row_number() OVER () AS osm_id,
       ST_AsBinary(way) AS way,
+      osm_id,
       amenity
-    FROM (
-      SELECT
-          way,
-          amenity
-        FROM planet_osm_polygon
-        WHERE way && !BBOX!
-          AND (amenity IN ('hospital', 'school', 'college', 'university'))
-          AND way_area > pixel_size(!ZOOM!)*0.25
-    ) _
+    FROM planet_osm_polygon
+    WHERE way && !BBOX!
+      AND (amenity IN ('hospital', 'school', 'college', 'university'))
+      AND way_area > pixel_size(!ZOOM!)*0.25
   """
 
 [[maps]]
