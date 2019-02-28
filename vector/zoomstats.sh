@@ -18,5 +18,6 @@ P95=$(dc -e "$N 99 * 100 / p")
 P99=$(dc -e "$N 99 * 100 / p")
 
 echo "$1"
+echo "$AVG"
 awk "FNR==$P50 || FNR==$P75 || FNR==$P95 || FNR==$P99" $FILE
 
