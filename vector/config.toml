@@ -47,7 +47,7 @@ SELECT
     AND (waterway = 'riverbank'
       OR landuse = 'reservoir'
       OR "natural" = 'water')
-    AND way_area > pixel_size(!ZOOM!)*0.25
+    AND way_area > pixel_area(!ZOOM!)*0.25
 """
 
 [[providers.layers]]
@@ -70,7 +70,7 @@ SELECT
     AND (waterway = 'riverbank'
       OR landuse = 'reservoir'
       OR "natural" = 'water')
-    AND way_area > pixel_size(!ZOOM!)*0.25
+    AND way_area > pixel_area(!ZOOM!)*0.25
 """
 
 [[providers.layers]]
@@ -90,7 +90,7 @@ SELECT
     AND (landuse = 'reservoir'
       OR "natural" = 'water')
     AND NOT water = 'river'
-    AND way_area > pixel_size(!ZOOM!)*16*16
+    AND way_area > pixel_area(!ZOOM!)*16*16
 UNION ALL
 SELECT
     ST_AsBinary(way) AS way,
@@ -278,7 +278,7 @@ SELECT
   FROM planet_osm_polygon
   WHERE way && !BBOX!
     AND (landuse = 'forest' OR "natural" = 'wood')
-    AND way_area > pixel_size(!ZOOM!)*0.25
+    AND way_area > pixel_area(!ZOOM!)*0.25
 """
 [[providers.layers]]
 name = "parks"
@@ -292,7 +292,7 @@ SELECT
   FROM planet_osm_polygon
   WHERE way && !BBOX!
     AND (leisure = 'park')
-    AND way_area > pixel_size(!ZOOM!)*0.25
+    AND way_area > pixel_area(!ZOOM!)*0.25
 """
 
 [[providers.layers]]
@@ -307,7 +307,7 @@ SELECT
   FROM planet_osm_polygon
   WHERE way && !BBOX!
     AND (boundary = 'national_park' OR leisure = 'nature_reserve')
-    AND way_area > pixel_size(!ZOOM!)*0.25
+    AND way_area > pixel_area(!ZOOM!)*0.25
 """
 
 [[providers.layers]]
@@ -323,7 +323,7 @@ SELECT
   FROM planet_osm_polygon
   WHERE way && !BBOX!
     AND (landuse IN ('retail', 'commercial', 'industrial', 'railway'))
-    AND way_area > pixel_size(!ZOOM!)*0.25
+    AND way_area > pixel_area(!ZOOM!)*0.25
 """
 
 [[providers.layers]]
@@ -339,7 +339,7 @@ SELECT
   FROM planet_osm_polygon
   WHERE way && !BBOX!
     AND (amenity IN ('hospital', 'school', 'college', 'university'))
-    AND way_area > pixel_size(!ZOOM!)*0.25
+    AND way_area > pixel_area(!ZOOM!)*0.25
 """
 
 [[maps]]
