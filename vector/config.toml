@@ -112,6 +112,21 @@ SELECT
 """
 
 [[providers.layers]]
+name = "lz_boundaries"
+geometry_fieldname = "way"
+geometry_type = "LineString"
+sql = """
+SELECT
+    ST_AsBinary(way) AS way,
+    osm_id
+  FROM planet_osm_roads
+  WHERE way && !BBOX!
+    AND boundary = 'administrative'
+    AND admin_level IN ('0', '1', '2', '3', '4')
+    AND osm_id < 0
+"""
+
+[[providers.layers]]
 name = "cities"
 geometry_fieldname = "way"
 geometry_type = "Point"
@@ -305,6 +320,11 @@ min_zoom = 10
 name = "boundaries"
 provider_layer = "osm2pgsql.ne_boundaries"
 min_zoom = 0
+max_zoom = 3
+[[maps.layers]]
+name = "boundaries"
+provider_layer = "osm2pgsql.lz_boundaries"
+min_zoom = 4
 max_zoom = 15
 
 [[maps.layers]]
