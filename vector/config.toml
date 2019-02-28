@@ -29,7 +29,6 @@ SELECT
 
 [[providers.layers]]
 name = "lz_water"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
@@ -52,7 +51,6 @@ SELECT
 
 [[providers.layers]]
 name = "water"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
@@ -75,7 +73,6 @@ SELECT
 
 [[providers.layers]]
 name = "water_names"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Point"
 sql = """
@@ -116,7 +113,6 @@ SELECT
 
 [[providers.layers]]
 name = "cities"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Point"
 sql = """
@@ -136,7 +132,6 @@ SELECT
 
 [[providers.layers]]
 name = "lz_transport"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "LineString"
 sql = """
@@ -160,7 +155,6 @@ SELECT
 
 [[providers.layers]]
 name = "transport_z10"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "LineString"
 sql = """
@@ -182,7 +176,6 @@ SELECT
 
 [[providers.layers]]
 name = "transport_z12"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 sql = """
 SELECT
@@ -203,7 +196,6 @@ SELECT
 
 [[providers.layers]]
 name = "buildings_z13"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 sql = """
 SELECT
@@ -217,7 +209,6 @@ SELECT
 
 [[providers.layers]]
 name = "forests"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
@@ -231,7 +222,6 @@ SELECT
 """
 [[providers.layers]]
 name = "parks"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
@@ -246,7 +236,6 @@ SELECT
 
 [[providers.layers]]
 name = "regional_parks"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
@@ -261,7 +250,6 @@ SELECT
 
 [[providers.layers]]
 name = "landuse"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
@@ -277,7 +265,6 @@ SELECT
 
 [[providers.layers]]
 name = "poi_areas"
-id_fieldname = "osm_id"
 geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
