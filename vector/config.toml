@@ -149,64 +149,13 @@ SELECT
     FALSE AS link
   FROM planet_osm_roads
   WHERE way && !BBOX!
-    AND highway IN ('motorway')
-"""
-
-[[providers.layers]]
-name = "transport_z6"
-id_fieldname = "osm_id"
-geometry_fieldname = "way"
-geometry_type = "LineString"
-sql = """
-SELECT
-    ST_AsBinary(way) AS way,
-    osm_id,
-    name,
-    ref,
-    highway AS class,
-    FALSE AS link
-  FROM planet_osm_roads
-  WHERE way && !BBOX!
-    AND highway IN ('motorway', 'trunk')
-"""
-
-[[providers.layers]]
-name = "transport_z8"
-id_fieldname = "osm_id"
-geometry_fieldname = "way"
-geometry_type = "LineString"
-sql = """
-SELECT
-    ST_AsBinary(way) AS way,
-    osm_id,
-    name,
-    ref,
-    highway AS class,
-    FALSE AS link
-  FROM planet_osm_roads
-  WHERE way && !BBOX!
-    AND highway IN ('motorway', 'trunk', 'primary')
-"""
-
-[[providers.layers]]
-name = "transport_z9"
-id_fieldname = "osm_id"
-geometry_fieldname = "way"
-geometry_type = "LineString"
-sql = """
-SELECT
-    ST_AsBinary(way) AS way,
-    osm_id,
-    name,
-    ref,
-    highway AS class,
-    railway,
-    FALSE AS link
-  FROM planet_osm_roads
-  WHERE way && !BBOX!
-    AND (highway IN ('motorway', 'trunk', 'primary', 'secondary')
+    AND (highway IN ('motorway')
+      OR highway IN ('motorway', 'trunk') AND !ZOOM! >=6
+      OR highway IN ('motorway', 'trunk', 'primary') AND !ZOOM! >=8
+      OR highway IN ('motorway', 'trunk', 'primary', 'secondary') AND !ZOOM! >=9
       OR railway IN ('rail', 'narrow_gague', 'funicular')
-      AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
+        AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard'))
+        AND !ZOOM! >=9)
 """
 
 [[providers.layers]]
