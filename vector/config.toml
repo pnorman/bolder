@@ -166,7 +166,7 @@ SELECT
       OR railway IN ('rail', 'narrow_gague', 'funicular')
         AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard'))
         AND !ZOOM! >=9)
-    AND GROUP BY name, ref, highway
+    GROUP BY name, ref, highway
 """
 
 [[providers.layers]]
