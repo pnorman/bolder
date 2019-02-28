@@ -87,7 +87,7 @@ SELECT
     AND (landuse = 'reservoir'
       OR "natural" = 'water')
     AND NOT water = 'river'
-    AND way_area > pixel_area(!ZOOM!)*16*16
+    AND way_area > pixel_area(!ZOOM!)*64*64
 UNION ALL
 SELECT
     ST_AsBinary(way) AS way,
