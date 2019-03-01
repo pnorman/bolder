@@ -17,12 +17,12 @@ geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
 SELECT
-    ST_AsBinary(way) AS way
+    ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way
   FROM ne_ocean
   WHERE way && !BBOX!
 UNION ALL
 SELECT
-    ST_AsBinary(way) AS way
+    ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way
   FROM ne_lake
   WHERE way && !BBOX!
 """
@@ -33,13 +33,13 @@ geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
 SELECT
-    ST_AsBinary(way) AS way,
+    ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way,
     NULL as osm_id
   FROM simplified_ocean_polygons
   WHERE way && !BBOX!
 UNION ALL
 SELECT
-    ST_AsBinary(way) AS way,
+    ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way,
     osm_id
   FROM planet_osm_polygon
   WHERE way && !BBOX!
@@ -56,13 +56,13 @@ geometry_type = "Polygon"
 sql = """
 SELECT
     NULL AS osm_id,
-    ST_AsBinary(way) AS way
+    ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way
   FROM ocean_polygons
   WHERE way && !BBOX!
 UNION ALL
 SELECT
     osm_id,
-    ST_AsBinary(way) AS way
+    ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way
   FROM planet_osm_polygon
   WHERE way && !BBOX!
     AND (waterway = 'riverbank'
@@ -106,7 +106,7 @@ geometry_fieldname = "way"
 geometry_type = "LineString"
 sql = """
 SELECT
-    ST_AsBinary(way) AS way
+    ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way
   FROM ne_populated_places
   WHERE way && !BBOX!
 """
@@ -117,7 +117,7 @@ geometry_fieldname = "way"
 geometry_type = "LineString"
 sql = """
 SELECT
-    ST_AsBinary(way) AS way,
+    ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way,
     osm_id,
     admin_level::integer
   FROM planet_osm_roads
@@ -152,7 +152,7 @@ geometry_fieldname = "way"
 geometry_type = "LineString"
 sql = """
 SELECT
-    ST_AsBinary(ST_Union(way)) AS way,
+    ST_AsBinary(ST_Union(ST_RemoveRepeatedPoints(way, pixel_size(!ZOOM!)*0.25))) AS way,
     name,
     ref,
     highway AS class,
