@@ -90,7 +90,7 @@ SELECT
     AND way_area > pixel_area(!ZOOM!)*64*64
 UNION ALL
 SELECT
-    ST_AsBinary(way) AS way,
+    ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way,
     osm_id,
     name,
     NULL AS area
@@ -256,7 +256,7 @@ geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
 SELECT
-    ST_AsBinary(way) AS way,
+    ST_AsBinary(ST_Union(ST_Buffer(way, pixel_size(!ZOOM!)))) AS way,
     osm_id
   FROM planet_osm_polygon
   WHERE way && !BBOX!
