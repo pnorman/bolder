@@ -8,6 +8,9 @@ scene:
     color: &land-color '#f7efe8' #lch(95,5,70)
 
 styles:
+  boundary:
+    base: lines
+    blend: translucent
   labels:
     base: text
     draw:
@@ -116,6 +119,19 @@ layers:
         order: 500
         color: '#dbd3cb' #lch(85,5,70)
 
+  boundaries:
+    data: { source: bolder }
+    a2:
+      filter:
+        admin_level: [0, 1, 2]
+      draw:
+        boundary:
+          order: 900
+          color: [0,0,0, 0.5] #lch(55,0,0)
+          width: [[4, 1.5px]]
+          outline:
+            color: [0,0,0, 0.2]
+            width: [[4, 1px]]
   cities:
     data: { source: bolder }
     city:
