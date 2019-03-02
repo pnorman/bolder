@@ -106,7 +106,8 @@ geometry_fieldname = "way"
 geometry_type = "LineString"
 sql = """
 SELECT
-    ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way
+    ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way,
+    2 AS admin_level
   FROM ne_populated_places
   WHERE way && !BBOX!
 """
