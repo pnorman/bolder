@@ -22,7 +22,7 @@ SELECT
   WHERE way && !BBOX!
 UNION ALL
 SELECT
-    ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way
+    ST_AsBinary(way) AS way
   FROM ne_lake
   WHERE way && !BBOX!
 """
@@ -300,7 +300,7 @@ geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
 SELECT
-    ST_AsBinary(ST_Union(ST_Buffer(way, pixel_size(!ZOOM!)))) AS way,
+    ST_AsBinary(way) AS way,
     osm_id
   FROM planet_osm_polygon
   WHERE way && !BBOX!
