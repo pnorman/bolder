@@ -115,16 +115,60 @@ SELECT
 name = "lz_boundaries"
 geometry_fieldname = "way"
 geometry_type = "LineString"
+# The SQL for boundaries is fairly complex because it deduplicates overlapping
+# lines, To do this, the boundary linestrings need to be turned into two-point
+# segments, distinct segments found, and then the result rebuilt into longer
+# linestrings. Tegola #559 prevents the use of CTEs, so this needs to be done
+# with nested subselects which are messier.
+# References:
+# - http://blog.cleverelephant.ca/2015/02/breaking-linestring-into-segments.html
 sql = """
 SELECT
-    ST_AsBinary(ST_RemoveRepeatedPoints(way,pixel_size(!ZOOM!)*0.25)) AS way,
+    ST_AsBinary(ST_RemoveRepeatedPoints(ST_LineMerge(ST_Collect(way)), pixel_size(!ZOOM!)*0.25)) AS way,
+    admin_level::integer,
+    osm_id
+  FROM
+  (SELECT
+      DISTINCT ON (way) -- Select only one of the overlapping geoms
+      way,
+      admin_level::integer,
+      osm_id
+    FROM
+    (SELECT
+        ST_MakeLine(
+          lag((pt).geom) OVER (PARTITION BY ctid ORDER BY ctid, (pt).path),
+          (pt).geom) AS way, -- This makes a line between the previous point and the next one
+        admin_level::integer,
+        osm_id
+      FROM
+      (SELECT
+          ctid,
+          ST_DumpPoints(way) AS pt,
+          admin_level::integer,
+          osm_id
+        FROM
+        (SELECT -- The innermost select just gets the admin boundaries
+            ctid, -- ctid is kept around as a unique id because osm_id is not unique with long line splitting
+            way,
+            admin_level::integer,
+            osm_id
+          FROM planet_osm_roads
+          WHERE way && !BBOX!
+            AND boundary = 'administrative'
+            AND admin_level IN ('0', '1', '2', '3', '4')
+            AND osm_id < 0
+        ) boundaries
+      ) AS dumps
+    ) AS segments
+    WHERE way IS NOT NULL
+    ORDER BY
+      way,
+      admin_level,
+      osm_id
+  ) AS deduplicated_segments
+  GROUP BY
     osm_id,
-    admin_level::integer
-  FROM planet_osm_roads
-  WHERE way && !BBOX!
-    AND boundary = 'administrative'
-    AND admin_level IN ('0', '1', '2', '3', '4')
-    AND osm_id < 0
+    admin_level
 """
 
 [[providers.layers]]
