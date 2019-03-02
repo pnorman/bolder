@@ -128,10 +128,22 @@ layers:
         boundary:
           order: 900
           color: [0,0,0, 0.5] #lch(55,0,0)
-          width: [[4, 1.5px]]
+          width: [[4, 1px]]
           outline:
             color: [0,0,0, 0.2]
             width: [[4, 1px]]
+    a4:
+      filter:
+        admin_level: [3, 4]
+        $zoom: { min: 4 }
+      draw:
+        boundary:
+          order: 900
+          color: [0,0,0, 0.4] #lch(55,0,0)
+          width: [[4, 1px]]
+          outline:
+            color: [0,0,0, 0.2]
+            width: [[4, 0px]]
   cities:
     data: { source: bolder }
     city:
