@@ -124,7 +124,9 @@ geometry_type = "LineString"
 # - http://blog.cleverelephant.ca/2015/02/breaking-linestring-into-segments.html
 sql = """
 SELECT
-    ST_AsBinary(ST_RemoveRepeatedPoints(ST_LineMerge(ST_Collect(way)), pixel_size(!ZOOM!)*0.25)) AS way,
+    ST_AsBinary(ST_RemoveRepeatedPoints(
+      (ST_Dump(ST_LineMerge(ST_Collect(way)))).geom,
+      pixel_size(!ZOOM!)*0.25)) AS way,
     admin_level::integer,
     osm_id
   FROM
