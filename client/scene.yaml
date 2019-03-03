@@ -204,7 +204,7 @@ layers:
             outline:
               color: '#d4d4d4' #lch(85,0,0)
 
-    # All the road widths are based on # m=0.16e^(0.24z)
+    # All the road widths are based on m=0.75e^(0.15z)
     motorway:
       filter:
         class: [motorway]
@@ -213,13 +213,13 @@ layers:
         lines:
           order: 600
           color: '#f9b887' #lch(80,40,60)
-          # m for z4-z7, 0.6*m for z8+
-          width: &motorway-width [[4, 0.42px], [6, .68px], [8, 0.65px], [12, 1.7px], [16, 4.5px], [20, 11.67px]]
+          # 1*m for z4-z7, 0.6*m for z8+
+          width: &motorway-width [[4, 1.37px], [6, 1.84px], [8, 1.49px], [12, 2.72x], [16, 4.96px], [20, 9.04px]]
           cap: round
           outline:
             color: '#e5995d' #lch(70,50,60)
-            #0.2*m for z8+
-            width: &motorway-casing-width [[6, 0], [8, 0.22px], [12, .57px], [16, 1.5px], [20, 3.9px]]
+            #0.2*m for z8+. This combines with the inside to make a total width of 1*m
+            width: &motorway-casing-width [[6, 0], [8, 0.50px], [12, 0.91px], [16, 1.65px], [20, 3.01px]]
         labels:
           order: 800
           font:
@@ -234,12 +234,12 @@ layers:
             order: 600
             color: '#fcd09b' #lch(85,35,70)
             # 0.95*m for z6-z9, 0.55*m for z10+
-            width: [[6, 0.64px], [8, 1.0px], [10, 1.0px], [12, 1.6px], [16, 4.1px], [20, 11px]]
+            width: [[6, 1.75px], [8, 2.37px], [10, 1.85px], [12, 2.50px], [16, 4.55px], [20, 8.29px]]
             cap: round
             outline:
               color: '#d2a167' #lch(70,40,70)
               #0.2*m for z10+
-              width: [[8, 0px], [12, .57px], [16, 1.5px], [20, 3.9px]]
+              width: [[8, 0px], [10, 0.67px], [12, 0.91px], [16, 1.65px], [20, 3.01px]]
       names:
         draw:
           road_names:
@@ -257,11 +257,12 @@ layers:
             order: 600
             color: '#f4dfbd' #lch(90,20,80)
             # 0.88*m for z9-z11, 0.48*m for z12+
-            width: [[8, 0.96px], [10, 1.6px], [12, 1.37px], [16, 3.6px], [20, 9.33px]]
+            width: [[8, 2.19px], [10, 2.96px], [12, 2.18px], [16, 3.97px], [20, 7.23px]]
             cap: round
             outline:
               color: '#dbc398' #lch(80,25,80)
-              width: [[10, 0px], [12, .57px], [16, 1.5px], [20, 3.9px]]
+              #0.2*m for z12+
+              width: [[10, 0px], [12, 0.91px], [16, 1.65px], [20, 3.01px]]
       names:
         filter:
           - { class: secondary, $zoom: { min: 12 } }
@@ -285,7 +286,8 @@ layers:
             cap: round
             outline:
               color: '#d4d4d4' #lch(85,0,0)
-              width: [[10, 0px], [12, .57px], [16, 1.5px], [20, 3.9px]]
+              #0.2*m for z12+
+              width: [[10, 0px], [12, 0.91px], [16, 1.65px], [20, 3.01px]]
       names:
         filter:
           - { class: unclassified, $zoom: { min: 12 } }
