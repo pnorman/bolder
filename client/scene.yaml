@@ -149,7 +149,7 @@ layers:
     city:
       filter:
         place: [city]
-        $zoom: { min: 8 }
+        $zoom: { min: 4 }
       draw:
         labels:
           order: 700
