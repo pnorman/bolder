@@ -180,10 +180,24 @@ geometry_fieldname = "way"
 geometry_type = "Point"
 sql = """
 SELECT
+  DISTINCT ON (ST_SnapToGrid(way, pixel_size(!ZOOM!)*64))
     ST_AsBinary(way) AS way,
     osm_id,
     name,
-    place
+    place,
+    (
+      (CASE
+        WHEN (tags->'population' ~ '^[0-9]{1,8}$') THEN (tags->'population')::integer
+        WHEN (place = 'city') THEN 100000
+        WHEN (place = 'town') THEN 1000
+        ELSE 1
+      END)
+      *
+      (CASE
+        WHEN (tags @> 'capital=>4') THEN 2
+        ELSE 1
+      END)
+    ) AS score
   FROM planet_osm_point
   WHERE way && !BBOX!
     AND (place = 'city'
@@ -191,6 +205,10 @@ SELECT
       OR place = 'village' AND 10 < !ZOOM!
       OR place = 'hamlet' AND 12 < !ZOOM!)
     AND name IS NOT NULL
+    ORDER BY
+      ST_SnapToGrid(way, pixel_size(!ZOOM!)*64),
+      score DESC NULLS LAST,
+      osm_id
 """
 
 [[providers.layers]]
@@ -408,7 +426,7 @@ max_zoom = 15
 [[maps.layers]]
 name = "cities"
 provider_layer = "osm2pgsql.cities"
-min_zoom = 6
+min_zoom = 4
 max_zoom = 15
 
 [[maps.layers]]
