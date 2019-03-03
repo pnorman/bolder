@@ -434,7 +434,7 @@ max_zoom = 15
 [[maps.layers]]
 name = "transport"
 provider_layer = "osm2pgsql.lz_transport"
-min_zoom = 5
+min_zoom = 4
 max_zoom = 9
 [[maps.layers]]
 name = "transport"
