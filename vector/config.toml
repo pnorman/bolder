@@ -231,7 +231,8 @@ SELECT
       OR railway IN ('rail', 'narrow_gague', 'funicular')
         AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard'))
         AND !ZOOM! >=9)
-    GROUP BY name, ref, highway
+    GROUP BY name, ref, highway, z_order
+    ORDER BY z_order DESC
 """
 
 [[providers.layers]]
@@ -253,6 +254,7 @@ SELECT
                       'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
       OR railway IN ('rail', 'narrow_gague', 'funicular')
       AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
+  ORDER BY layer DESC, z_order DESC
 """
 
 [[providers.layers]]
