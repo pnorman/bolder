@@ -369,30 +369,66 @@ name = "water"
 provider_layer = "osm2pgsql.ne_water"
 min_zoom = 0
 max_zoom = 5
+dont_simplify = true
 [[maps.layers]]
 name = "water"
 provider_layer = "osm2pgsql.lz_water"
 min_zoom = 6
 max_zoom = 9
+dont_simplify = true
 [[maps.layers]]
 name = "water"
 provider_layer = "osm2pgsql.water"
 min_zoom = 10
+dont_simplify = true
 
 [[maps.layers]]
 name = "water_names"
 provider_layer = "osm2pgsql.water_names"
 min_zoom = 10
+dont_simplify = true
 
 [[maps.layers]]
 name = "boundaries"
 provider_layer = "osm2pgsql.ne_boundaries"
 min_zoom = 0
 max_zoom = 3
+dont_simplify = true
 [[maps.layers]]
 name = "boundaries"
 provider_layer = "osm2pgsql.lz_boundaries"
 min_zoom = 4
+max_zoom = 15
+dont_simplify = true
+
+[[maps.layers]]
+name = "cities"
+provider_layer = "osm2pgsql.cities"
+min_zoom = 4
+max_zoom = 15
+dont_simplify = true
+
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.lz_transport"
+min_zoom = 4
+max_zoom = 9
+dont_simplify = true
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.transport_z10"
+min_zoom = 10
+max_zoom = 11
+[[maps.layers]]
+name = "transport"
+provider_layer = "osm2pgsql.transport_z12"
+min_zoom = 12
+max_zoom = 15
+
+[[maps.layers]]
+name = "buildings"
+provider_layer = "osm2pgsql.buildings_z13"
+min_zoom = 13
 max_zoom = 15
 
 [[maps.layers]]
@@ -416,33 +452,5 @@ max_zoom = 15
 [[maps.layers]]
 name = "poi_areas"
 provider_layer = "osm2pgsql.poi_areas"
-min_zoom = 12
-max_zoom = 15
-
-[[maps.layers]]
-name = "buildings"
-provider_layer = "osm2pgsql.buildings_z13"
-min_zoom = 13
-max_zoom = 15
-
-[[maps.layers]]
-name = "cities"
-provider_layer = "osm2pgsql.cities"
-min_zoom = 4
-max_zoom = 15
-
-[[maps.layers]]
-name = "transport"
-provider_layer = "osm2pgsql.lz_transport"
-min_zoom = 4
-max_zoom = 9
-[[maps.layers]]
-name = "transport"
-provider_layer = "osm2pgsql.transport_z10"
-min_zoom = 10
-max_zoom = 11
-[[maps.layers]]
-name = "transport"
-provider_layer = "osm2pgsql.transport_z12"
 min_zoom = 12
 max_zoom = 15
