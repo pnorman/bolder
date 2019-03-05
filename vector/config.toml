@@ -17,7 +17,7 @@ geometry_fieldname = "way"
 geometry_type = "Polygon"
 sql = """
 SELECT
-    ST_AsBinary(ST_SimplifyPreserveTopology(way, pixel_size(!ZOOM!)*.25)) AS way
+    ST_AsBinary(way) AS way
   FROM ne_ocean
   WHERE way && !BBOX!
 UNION ALL
@@ -369,7 +369,6 @@ name = "water"
 provider_layer = "osm2pgsql.ne_water"
 min_zoom = 0
 max_zoom = 5
-dont_simplify = true
 [[maps.layers]]
 name = "water"
 provider_layer = "osm2pgsql.lz_water"
