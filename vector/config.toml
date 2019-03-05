@@ -252,29 +252,10 @@ SELECT
   WHERE way && !BBOX!
     AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
                       'secondary', 'secondary_link', 'tertiary', 'tertiary_link')
+      OR highway in ('unclassified', 'residential') AND !ZOOM! >=12
       OR railway IN ('rail', 'narrow_gague', 'funicular')
-      AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard')))
-  ORDER BY layer DESC, z_order DESC
-"""
-
-[[providers.layers]]
-name = "transport_z12"
-geometry_fieldname = "way"
-sql = """
-SELECT
-    ST_AsBinary(way) AS way,
-    osm_id,
-    name,
-    ref,
-    CASE WHEN substr(highway, length(highway)-4, 5) = '_link' THEN substr(highway, 0, length(highway)-4) ELSE highway END AS class, -- strip link
-    railway,
-    service,
-    substr(highway, length(highway)-4, 5) = '_link' AS link
-  FROM planet_osm_line
-  WHERE way && !BBOX!
-    AND (highway IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link',
-                    'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'unclassified', 'residential')
-      OR railway IN ('rail', 'narrow_gague', 'funicular'))
+      AND (service IS NULL OR service NOT IN ('spur', 'siding', 'yard') OR !ZOOM! >=12))
+  ORDER BY COALESCE(layer, 0) DESC, z_order DESC
 """
 
 [[providers.layers]]
@@ -417,11 +398,6 @@ dont_simplify = true
 name = "transport"
 provider_layer = "osm2pgsql.transport_z10"
 min_zoom = 10
-max_zoom = 11
-[[maps.layers]]
-name = "transport"
-provider_layer = "osm2pgsql.transport_z12"
-min_zoom = 12
 max_zoom = 15
 
 [[maps.layers]]
